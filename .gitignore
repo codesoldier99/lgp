@@ -1,0 +1,36 @@
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio
+.vs/
+_vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.sln.docstates
+
+## NuGet
+packages/
+*.nupkg
+**/project.lock.json
+
+## Upgrade / installer noise
+UpgradeLog*.htm
+UpgradeLog*.XML
+
+## Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+## IDE (optional: remove next line to commit workspace settings)
+.vscode/
+*.code-workspace

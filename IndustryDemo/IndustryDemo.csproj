@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A4A9E305-3A29-4013-A16B-B3F48004002D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IndustryDemo</RootNamespace>
+    <AssemblyName>IndustryDemo</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>5fa3991d3bdc3.256px.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.BonusSkins.v20.2" />
+    <Reference Include="DevExpress.CodeParser.v20.2, Version=20.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Data.Desktop.v20.2" />
+    <Reference Include="DevExpress.Data.v20.2" />
+    <Reference Include="DevExpress.DataAccess.v20.2, Version=20.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v20.2" />
+    <Reference Include="DevExpress.Sparkline.v20.2.Core" />
+    <Reference Include="DevExpress.Xpo.v20.2, Version=20.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraBars.v20.2, Version=20.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v20.2" />
+    <Reference Include="DevExpress.Printing.v20.2.Core" />
+    <Reference Include="DevExpress.XtraGrid.v20.2, Version=20.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v20.2, Version=20.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v20.2, Version=20.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="halcondotnet, Version=20.11.0.2, Culture=neutral, PublicKeyToken=4973bed59ddbf2b8, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\MVTec\HALCON-22.05-Progress\bin\dotnet35\halcondotnet.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="MvCameraControl.Net, Version=3.2.0.2, Culture=neutral, PublicKeyToken=52fddfb3f94be800, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\MvCameraControl.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=8.0.32.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\MySQL\Connector NET 8.0\Assemblies\v4.5.2\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="NModbus4, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\NModbus4.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllerui\bubble.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controllerui\bubble.Designer.cs">
+      <DependentUpon>bubble.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllerui\CamArray.cs" />
+    <Compile Include="Controllerui\Camera.cs" />
+    <Compile Include="Controllerui\cameraDevices.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controllerui\cameraDevices.Designer.cs">
+      <DependentUpon>cameraDevices.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllerui\ConfigInfoui.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controllerui\ConfigInfoui.Designer.cs">
+      <DependentUpon>ConfigInfoui.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllerui\DataBaseOperate.cs" />
+    <Compile Include="Controllerui\DefectionClass.cs" />
+    <Compile Include="Controllerui\detection.cs" />
+    <Compile Include="Controllerui\Detectionui.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controllerui\Detectionui.Designer.cs">
+      <DependentUpon>Detectionui.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllerui\DetectionUnderRingLight.cs" />
+    <Compile Include="Controllerui\DetectionUnderSpotLight.cs" />
+    <Compile Include="Controllerui\DetectionWithDL.cs" />
+    <Compile Include="Controllerui\distributeGraph.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controllerui\distributeGraph.Designer.cs">
+      <DependentUpon>distributeGraph.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllerui\fingerprint.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controllerui\fingerprint.Designer.cs">
+      <DependentUpon>fingerprint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllerui\Historyui.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controllerui\Historyui.Designer.cs">
+      <DependentUpon>Historyui.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllerui\nap.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controllerui\nap.Designer.cs">
+      <DependentUpon>nap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllerui\pinhole.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controllerui\pinhole.Designer.cs">
+      <DependentUpon>pinhole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllerui\position4.cs" />
+    <Compile Include="Controllerui\scratch.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controllerui\scratch.Designer.cs">
+      <DependentUpon>scratch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllerui\spot.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controllerui\spot.Designer.cs">
+      <DependentUpon>spot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllerui\SpotClusteringHelper.cs" />
+    <Compile Include="Controllerui\STM32Control.cs" />
+    <Compile Include="MySqlHelper.cs" />
+    <Compile Include="pictureshow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="pictureshow.Designer.cs">
+      <DependentUpon>pictureshow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Global.cs" />
+    <Compile Include="report.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="report.Designer.cs">
+      <DependentUpon>report.cs</DependentUpon>
+    </Compile>
+    <Compile Include="mainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mainForm.Designer.cs">
+      <DependentUpon>mainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program1.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="reportClass\selectByDefection.cs" />
+    <Compile Include="reportClass\selectByTime.cs" />
+    <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="XtraUserControl1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="XtraUserControl1.Designer.cs">
+      <DependentUpon>XtraUserControl1.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Controllerui\bubble.resx">
+      <DependentUpon>bubble.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllerui\cameraDevices.resx">
+      <DependentUpon>cameraDevices.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllerui\ConfigInfoui.resx">
+      <DependentUpon>ConfigInfoui.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllerui\Detectionui.resx">
+      <DependentUpon>Detectionui.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllerui\distributeGraph.resx">
+      <DependentUpon>distributeGraph.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllerui\fingerprint.resx">
+      <DependentUpon>fingerprint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllerui\Historyui.resx">
+      <DependentUpon>Historyui.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllerui\nap.resx">
+      <DependentUpon>nap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllerui\pinhole.resx">
+      <DependentUpon>pinhole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllerui\scratch.resx">
+      <DependentUpon>scratch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllerui\spot.resx">
+      <DependentUpon>spot.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="pictureshow.resx">
+      <DependentUpon>pictureshow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="report.resx">
+      <DependentUpon>report.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="mainForm.resx">
+      <DependentUpon>mainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="RDLC\selectByDefection.rdlc" />
+    <EmbeddedResource Include="RDLC\selectByTime.rdlc" />
+    <EmbeddedResource Include="XtraUserControl1.resx">
+      <DependentUpon>XtraUserControl1.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="5fa3991d3bdc3.256px.ico" />
+    <Content Include="Resources\icon.png" />
+    <Content Include="SqlServerTypes\readme.htm" />
+    <Content Include="SqlServerTypes\x64\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\手印.bmp" />
+    <None Include="Resources\气泡.bmp" />
+    <None Include="Resources\膜破.bmp" />
+    <None Include="Resources\麻点.bmp" />
+    <None Include="Resources\划伤.bmp" />
+    <None Include="Resources\腐蚀印.bmp" />
+    <None Include="Resources\擦痕.bmp" />
+    <None Include="Resources\布毛.bmp" />
+    <None Include="Resources\针孔.bmp" />
+    <None Include="Resources\1-2-麻点.jpg" />
+    <None Include="Resources\2-5-气泡-点.jpg" />
+    <None Include="Resources\布毛2-2-2.jpg" />
+    <None Include="Resources\擦伤4-1-2.jpg" />
+    <None Include="Resources\针孔2-1.jpg" />
+    <None Include="Resources\划伤3-1.jpg" />
+    <None Include="Resources\道子6-1.jpg" />
+    <None Include="Resources\道子3-1.bmp" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
