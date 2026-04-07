@@ -1047,9 +1047,14 @@ namespace IndustryDemo.Controllerui
                     //获取滤光片等级
                     string order = "select level from filterlevel where qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "' and posX='" + i + "' and posY='" + j + "'";
                     DataTable dt_now = MySqlHelper.GetDataTable(out err, order);
+                    int level = 3;
+                    if (dt_now != null && dt_now.Rows != null && dt_now.Rows.Count > 0)
+                    {
+                        level = Convert.ToInt32(dt_now.Rows[0][0]);
+                    }
                     //if (optArray[i, j] != 0)
                     {
-                        if (Convert.ToInt32(dt_now.Rows[0][0]) == 6)
+                        if (level == 6)
                         {
                             if (Global.optshape == "圆形")
                             {
@@ -1067,7 +1072,7 @@ namespace IndustryDemo.Controllerui
                             }
 
                         }
-                        else if (Convert.ToInt32(dt_now.Rows[0][0]) == 5)
+                        else if (level == 5)
                         {
                             if (Global.optshape == "圆形")
                             {
@@ -1083,7 +1088,7 @@ namespace IndustryDemo.Controllerui
                             }
 
                         }
-                        else if (Convert.ToInt32(dt_now.Rows[0][0]) == 4)
+                        else if (level == 4)
                         {
                             if (Global.optshape == "圆形")
                             {
@@ -1099,7 +1104,7 @@ namespace IndustryDemo.Controllerui
                             }
 
                         }
-                        else if (Convert.ToInt32(dt_now.Rows[0][0]) == 3)
+                        else if (level == 3)
                         {
                             if (Global.optshape == "圆形")
                             {
@@ -1611,6 +1616,10 @@ namespace IndustryDemo.Controllerui
                         all += camera2.cameraData.Length;
                         all += camera3.cameraData.Length;
                         all += camera4.cameraData.Length;
+                        all += camera5.cameraData.Length;
+                        all += camera6.cameraData.Length;
+                        all += camera7.cameraData.Length;
+                        all += camera8.cameraData.Length;
                         if (all == 0)
                         {
                             camera1.DetectFinished();
@@ -1624,6 +1633,7 @@ namespace IndustryDemo.Controllerui
                             disk = false;
                             break;
                         }
+                        Thread.Sleep(10);
                     }
                     camera1.cameraData.Release();
                     camera2.cameraData.Release();
@@ -1671,10 +1681,10 @@ namespace IndustryDemo.Controllerui
         #region 数据库操作
         private void defDataToDB(int i,int j)
         {
-            DataTable dt = MySqlHelper.GetDataTable(out err, "select count(*) from defection where posX=" + i + " and posY=" + j + "' and detectiontime='" + Global.detectiontime + "");
+            DataTable dt = MySqlHelper.GetDataTable(out err, "select count(*) from defection where qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "' and posX='" + i + "' and posY='" + j + "'");
             Global.defNumberOnSameFilt = Convert.ToInt32(dt.Rows[0][0]);
 
-            DataTable dt1 = MySqlHelper.GetDataTable(out err, "select defectionType,area from defection where posX=" + i + " and posY=" + j + "' and detectiontime='" + Global.detectiontime + "");
+            DataTable dt1 = MySqlHelper.GetDataTable(out err, "select defectionType,area from defection where qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "' and posX='" + i + "' and posY='" + j + "'");
 
             
             
@@ -1833,7 +1843,7 @@ namespace IndustryDemo.Controllerui
             MySqlCommand comm = new MySqlCommand();
             comm.Connection = conn;
 
-            comm.CommandText = "select count(*) from defection WHERE qrcode="+Global.qrCode + "' and detectiontime='" + Global.detectiontime + "";     //拼接sql语句
+            comm.CommandText = "select count(*) from defection WHERE qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "'";     //拼接sql语句
             //select idtray,count(idtray) from defection WHERE idtray=1 GROUP BY idtray HAVING countidtray > 1;
 
 
@@ -1845,7 +1855,7 @@ namespace IndustryDemo.Controllerui
             Global.defNumber = Convert.ToInt32(trayTableReader.GetValue(0));  //读取defection表中idtray相同的数据的数量，即一个物料盘上瑕疵总数
             comm.Dispose();
             Global.defInfoArr = new Global.defInfo[Global.defNumber];   //实例化瑕疵数组，用于存储各个瑕疵的信息
-            String CommandText = "select picName,picX,picY from defection WHERE qrcode="+Global.qrCode + "' and detectiontime='" + Global.detectiontime;
+            String CommandText = "select picName,picX,picY from defection WHERE qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "'";
             // MessageBox.Show(comm.CommandText);
             MySqlDataAdapter adapter = new MySqlDataAdapter(CommandText, conn);
        
@@ -2085,8 +2095,13 @@ namespace IndustryDemo.Controllerui
                 //获取滤光片等级
                 string order = "select level from filterlevel where qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "' and posX='" + lastRow + "' and posY='" + lastCol + "'";
                 DataTable dt_now = MySqlHelper.GetDataTable(out err, order);
+                int level = 3;
+                if (dt_now != null && dt_now.Rows != null && dt_now.Rows.Count > 0)
+                {
+                    level = Convert.ToInt32(dt_now.Rows[0][0]);
+                }
                 //if (optArray[i, j] != 0)
-                if (Convert.ToInt32(dt_now.Rows[0][0]) == 6)
+                if (level == 6)
                 {
                     if (Global.optshape == "圆形")
                     {
@@ -2101,7 +2116,7 @@ namespace IndustryDemo.Controllerui
                         gra.FillRectangle(bushred, 0, 0, rectanglewidth, rectangleheight);//画填充椭圆的方法，x坐标、y坐标、宽、高，如果是100，则半径为50
                     }
                 }
-                else if (Convert.ToInt32(dt_now.Rows[0][0]) == 5)
+                else if (level == 5)
                 {
                     if (Global.optshape == "圆形")
                     {
@@ -2116,7 +2131,7 @@ namespace IndustryDemo.Controllerui
                         gra.FillRectangle(bushorange, 0, 0, rectanglewidth, rectangleheight);//画填充椭圆的方法，x坐标、y坐标、宽、高，如果是100，则半径为50
                     }
                 }
-                else if (Convert.ToInt32(dt_now.Rows[0][0]) == 4)
+                else if (level == 4)
                 {
                     if (Global.optshape == "圆形")
                     {
@@ -2131,7 +2146,7 @@ namespace IndustryDemo.Controllerui
                         gra.FillRectangle(bushyellow, 0, 0, rectanglewidth, rectangleheight);//画填充椭圆的方法，x坐标、y坐标、宽、高，如果是100，则半径为50
                     }
                 }
-                else if (Convert.ToInt32(dt_now.Rows[0][0]) == 3)
+                else if (level == 3)
                 {
                     if (Global.optshape == "圆形")
                     {
@@ -2666,9 +2681,61 @@ namespace IndustryDemo.Controllerui
             conn.Close();
         }
 
+        // 返回值: 1=中心区, 0=边缘区(含边界缓冲), -1=滤光片外
+        private int GetDefectRegion(double trayX, double trayY, int rowIndex, int colIndex, double circleCenterRatio, double squareCenterRatio)
+        {
+            const double boundaryBandMm = 0.2;
+
+            if (Global.optshape == "圆形")
+            {
+                double x = Math.Abs(350 - ((Global.diameter / 2 + 0.1) + ((350 - Global.diameter - 0.2) / (Global.optLine - 1)) * colIndex));
+                double y = Math.Abs(340 - ((Global.diameter / 2 + 0.1) + ((340 - Global.diameter - 0.2) / (Global.optRow - 1)) * rowIndex));
+                double distance = Math.Sqrt((trayX - x) * (trayX - x) + (trayY - y) * (trayY - y));
+
+                double radius = Global.diameter / 2.0;
+                double centerRadius = radius * circleCenterRatio;
+
+                if (distance <= centerRadius)
+                {
+                    return 1;
+                }
+                if (distance <= radius + boundaryBandMm)
+                {
+                    return 0;
+                }
+                return -1;
+            }
+
+            if (Global.optshape == "方形")
+            {
+                double x = Math.Abs(350 - ((Global.length / 2 + 0.1) + ((350 - Global.length - 0.2) / (Global.optLine - 1)) * colIndex));
+                double y = Math.Abs(340 - ((Global.width / 2 + 0.1) + ((340 - Global.width - 0.2) / (Global.optRow - 1)) * rowIndex));
+                double distanceX = Math.Abs(trayX - x);
+                double distanceY = Math.Abs(trayY - y);
+
+                double halfLength = Global.length / 2.0;
+                double halfWidth = Global.width / 2.0;
+
+                if (distanceX <= halfLength * squareCenterRatio && distanceY <= halfWidth * squareCenterRatio)
+                {
+                    return 1;
+                }
+                if (distanceX <= halfLength + boundaryBandMm && distanceY <= halfWidth + boundaryBandMm)
+                {
+                    return 0;
+                }
+                return -1;
+            }
+
+            return -1;
+        }
+
         //分级
         public void divideScale()
         {
+            // 防止同一批次重复分级时生成重复记录
+            MySqlHelper.UpdateData(out err, "delete from filterlevel where qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "'");
+
             //定义中间划痕长度
             double centreScchLength = 0;
             //定义边缘划痕长度
@@ -2729,48 +2796,27 @@ namespace IndustryDemo.Controllerui
                         }
                         else if (Convert.ToString(dt_now.Rows[k][2]) == "划痕")//该瑕疵 == 划痕
                         {
+                            int scratchRegion = GetDefectRegion(
+                                Convert.ToDouble(dt_now.Rows[k][0]),
+                                Convert.ToDouble(dt_now.Rows[k][1]),
+                                i,
+                                j,
+                                0.7,
+                                0.9);
 
-                            if (Global.optshape == "圆形")
+                            if (scratchRegion == 1)
                             {
-                                //判断划痕位置
-                                double x, y;    //圆心坐标
-                                x = Math.Abs(350 - ((Global.diameter / 2 + 0.1) + ((350 - Global.diameter - 0.2) / (Global.optLine - 1)) * j));
-                                y = Math.Abs(340 - ((Global.diameter / 2 + 0.1) + ((340 - Global.diameter - 0.2) / (Global.optRow - 1)) * i));
-                                double distance = Math.Sqrt((Convert.ToDouble(dt_now.Rows[k][0]) - x) * (Convert.ToDouble(dt_now.Rows[k][0]) - x) + (Convert.ToDouble(dt_now.Rows[k][1]) - y) * (Convert.ToDouble(dt_now.Rows[k][1]) - y));
-                                if (distance <= (Global.diameter / 2.0) * 0.7)//在中间
-                                {
-                                    //中间划痕长度++
-                                    centreScchLength += Convert.ToDouble(dt_now.Rows[k][3]);
-                                }
-                                else
-                                {
-                                    //边缘长度++
-                                    edgeScchLength += Convert.ToDouble(dt_now.Rows[k][3]);
-                                }
+                                //中间划痕长度++
+                                centreScchLength += Convert.ToDouble(dt_now.Rows[k][3]);
                             }
-                            else if (Global.optshape == "方形")
+                            else if (scratchRegion == 0)
                             {
-                                //判断针孔位置
-                                double x, y;    //中心点坐标
-                                x = Math.Abs(350 - ((Global.length / 2 + 0.1) + ((350 - Global.length - 0.2) / (Global.optLine - 1)) * j));
-                                y = Math.Abs(340 - ((Global.width / 2 + 0.1) + ((340 - Global.width - 0.2) / (Global.optRow - 1)) * i));
-
-                                double distance_x = Math.Abs(Convert.ToDouble(dt_now.Rows[k][0]) - x);
-                                double distance_y = Math.Abs(Convert.ToDouble(dt_now.Rows[k][1]) - y);
-                                if ((distance_x) <= (Global.length / 2.0) * 0.9 && (distance_y) <= (Global.width / 2.0) * 0.9)//在中间
-                                {
-                                    //中间划痕长度++
-                                    centreScchLength += Convert.ToDouble(dt_now.Rows[k][3]);
-                                }
-                                else
-                                {
-                                    //边缘长度++
-                                    edgeScchLength += Convert.ToDouble(dt_now.Rows[k][3]);
-                                }
+                                //边缘长度++
+                                edgeScchLength += Convert.ToDouble(dt_now.Rows[k][3]);
                             }
 
                         }
-                        else if (Convert.ToString(dt_now.Rows[k][2]) == "点子")//该瑕疵 == 点子
+                        else if (Convert.ToString(dt_now.Rows[k][2]) == "点子" || Convert.ToString(dt_now.Rows[k][2]) == "内点子")//该瑕疵 == 点子/内点子
                         {
                             if (Convert.ToDouble(dt_now.Rows[k][4]) > 0.45)//针孔直径>0.2mm
                             {
@@ -2781,49 +2827,25 @@ namespace IndustryDemo.Controllerui
                                 break;  //跳出当前滤光片的瑕疵循环
                             }
 
-                            if (Global.optshape == "圆形")
+                            if (Convert.ToDouble(dt_now.Rows[k][4]) > 0.10)
                             {
-                                if (Convert.ToDouble(dt_now.Rows[k][4]) > 0.10)
-                                {
-                                    //判断针孔位置
-                                    double x, y;    //圆心坐标
-                                    x = Math.Abs(350 - ((Global.diameter / 2 + 0.1) + ((350 - Global.diameter - 0.2) / (Global.optLine - 1)) * j));
-                                    y = Math.Abs(340 - ((Global.diameter / 2 + 0.1) + ((340 - Global.diameter - 0.2) / (Global.optRow - 1)) * i));
-                                    double distance = Math.Sqrt((Convert.ToDouble(dt_now.Rows[k][0]) - x) * (Convert.ToDouble(dt_now.Rows[k][0]) - x) + (Convert.ToDouble(dt_now.Rows[k][1]) - y) * (Convert.ToDouble(dt_now.Rows[k][1]) - y));
+                                int spotRegion = GetDefectRegion(
+                                    Convert.ToDouble(dt_now.Rows[k][0]),
+                                    Convert.ToDouble(dt_now.Rows[k][1]),
+                                    i,
+                                    j,
+                                    0.9,
+                                    0.9);
 
-                                    if (distance <= (Global.diameter / 2.0) * 0.9)//在中间
-                                    {
-                                        //中间个数++
-                                        centrePhLength++;
-                                    }
-                                    else
-                                    {
-                                        //边缘个数++
-                                        edgePhLength++;
-                                    }
+                                if (spotRegion == 1)
+                                {
+                                    //中间个数++
+                                    centrePhLength++;
                                 }
-                            }
-                            else if (Global.optshape == "方形")
-                            {
-                                if (Convert.ToDouble(dt_now.Rows[k][4]) > 0.10)
+                                else if (spotRegion == 0)
                                 {
-                                    //判断针孔位置
-                                    double x, y;    //中心点坐标
-                                    x = Math.Abs(350 - ((Global.length / 2 + 0.1) + ((350 - Global.length - 0.2) / (Global.optLine - 1)) * j));
-                                    y = Math.Abs(340 - ((Global.width / 2 + 0.1) + ((340 - Global.width - 0.2) / (Global.optRow - 1)) * i));
-
-                                    double distance_x = Math.Abs(Convert.ToDouble(dt_now.Rows[k][0]) - x);
-                                    double distance_y = Math.Abs(Convert.ToDouble(dt_now.Rows[k][1]) - y);
-                                    if ((distance_x) <= (Global.length / 2.0) * 0.9 && (distance_y) <= (Global.width / 2.0) * 0.9)//在中间
-                                    {
-                                        //中间个数++
-                                        centrePhLength++;
-                                    }
-                                    else
-                                    {
-                                        //边缘个数++
-                                        edgePhLength++;
-                                    }
+                                    //边缘个数++
+                                    edgePhLength++;
                                 }
                             }
                         }
