@@ -26,6 +26,10 @@ packages/
 UpgradeLog*.htm
 UpgradeLog*.XML
 
+## Certificates / keys (do not publish)
+*.pfx
+*.p12
+
 ## Windows
 Thumbs.db
 ehthumbs.db
