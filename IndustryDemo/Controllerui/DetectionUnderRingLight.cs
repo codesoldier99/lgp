@@ -1,5 +1,7 @@
-﻿using HalconDotNet;
+﻿using System;
+using HalconDotNet;
 using System.Collections.Generic;
+using IndustryDemo;
 
 namespace IndustryDemo.Controllerui
 {
@@ -169,6 +171,9 @@ namespace IndustryDemo.Controllerui
             HObject ho_ConnectedRegions1, ho_RegionDilation2, ho_RegionDifference;
             HObject ho_ImageReduced2, ho_ObjectSelected1 = null;
             HObject ho_SelectedRegions2;
+            HObject ho_RegionClosing, ho_Regions2, ho_ConnectedRegions3;
+            HObject ho_bumaoDefects, ho_RegionDilation3, ho_RegionDifference2;
+            HObject ho_SelectedRegions3, ho_SelectedRegions4, ho_spotDefects;
             // Local control variables 
 
             HTuple hv_WindowHandle = new HTuple(), hv_MaxLineWidth = new HTuple();
@@ -183,6 +188,10 @@ namespace IndustryDemo.Controllerui
             HTuple hv_Row_bruise = new HTuple(), hv_Column_bruise = new HTuple();
             HTuple hv_Row_bruise_String = new HTuple(), hv_Column_bruise_String = new HTuple();
             HTuple hv_bruiseCoordinate = new HTuple(), hv_bruiseType = new HTuple();
+            HTuple hv_bumaoNumber = new HTuple(), hv_spotNumber = new HTuple();
+            HTuple hv_Area_bumao = new HTuple(), hv_Row_bumao = new HTuple();
+            HTuple hv_Column_bumao = new HTuple(), hv_Area_spot = new HTuple();
+            HTuple hv_Row_spot = new HTuple(), hv_Column_spot = new HTuple();
             HTuple hv_Type = new HTuple();
             // Initialize local and output iconic variables 
             HOperatorSet.GenEmptyObj(out ho_Regions);
@@ -217,6 +226,15 @@ namespace IndustryDemo.Controllerui
             HOperatorSet.GenEmptyObj(out ho_ImageReduced2);
             HOperatorSet.GenEmptyObj(out ho_SelectedRegions2);
             HOperatorSet.GenEmptyObj(out ho_ObjectSelected1);
+            HOperatorSet.GenEmptyObj(out ho_RegionClosing);
+            HOperatorSet.GenEmptyObj(out ho_Regions2);
+            HOperatorSet.GenEmptyObj(out ho_ConnectedRegions3);
+            HOperatorSet.GenEmptyObj(out ho_bumaoDefects);
+            HOperatorSet.GenEmptyObj(out ho_RegionDilation3);
+            HOperatorSet.GenEmptyObj(out ho_RegionDifference2);
+            HOperatorSet.GenEmptyObj(out ho_SelectedRegions3);
+            HOperatorSet.GenEmptyObj(out ho_SelectedRegions4);
+            HOperatorSet.GenEmptyObj(out ho_spotDefects);
 
             //ho_Image.Dispose();
             //HOperatorSet.ReadImage(out ho_Image, "F:/图片/20200908点光+环光/针孔+腐蚀印（待确认）/腐蚀印3-1（待确认）.bmp");
@@ -365,6 +383,180 @@ namespace IndustryDemo.Controllerui
             HOperatorSet.SelectShape(ho_SelectedRegions1, out ho_SelectedRegions2, "max_diameter",
                 "and", 0, 50);
 
+            //********************* 引入点光有效链路：布毛 + 麻点/手印 ****************************
+            ho_ImageMean.Dispose();
+            HOperatorSet.MeanImage(ho_ImageReduced2, out ho_ImageMean, 50, 50);
+            ho_DarkPixels.Dispose();
+            HOperatorSet.DynThreshold(ho_ImageReduced2, ho_ImageMean, out ho_DarkPixels, 10,
+                "light");
+            ho_RegionClosing.Dispose();
+            HOperatorSet.Closing(ho_DarkPixels, ho_DarkPixels, out ho_RegionClosing);
+            ho_ImageReduced3.Dispose();
+            HOperatorSet.ReduceDomain(ho_ImageReduced2, ho_RegionClosing, out ho_ImageReduced3
+                );
+            ho_Regions2.Dispose();
+            HOperatorSet.Threshold(ho_ImageReduced3, out ho_Regions2, 155, 255);
+            ho_ConnectedRegions3.Dispose();
+            HOperatorSet.Connection(ho_Regions2, out ho_ConnectedRegions3);
+            ho_bumaoDefects.Dispose();
+            HOperatorSet.SelectShape(ho_ConnectedRegions3, out ho_bumaoDefects, (new HTuple("area")).TupleConcat(
+                "roundness"), "and", (new HTuple(50)).TupleConcat(-1), (new HTuple(200000)).TupleConcat(0.67));
+
+            ho_RegionDilation3.Dispose();
+            HOperatorSet.DilationCircle(ho_bumaoDefects, out ho_RegionDilation3, 100);
+            ho_RegionDifference2.Dispose();
+            HOperatorSet.Difference(ho_ImageReduced2, ho_RegionDilation3, out ho_RegionDifference2
+                );
+            ho_ImageReduced3.Dispose();
+            HOperatorSet.ReduceDomain(ho_ImageReduced2, ho_RegionDifference2, out ho_ImageReduced3
+                );
+
+            ho_ImageMean.Dispose();
+            HOperatorSet.MeanImage(ho_ImageReduced3, out ho_ImageMean, 10, 10);
+            ho_DarkPixels.Dispose();
+            HOperatorSet.DynThreshold(ho_ImageReduced3, ho_ImageMean, out ho_DarkPixels, 10,
+                "dark");
+            ho_ConnectedRegions.Dispose();
+            HOperatorSet.Connection(ho_DarkPixels, out ho_ConnectedRegions);
+            ho_SelectedRegions3.Dispose();
+            HOperatorSet.SelectShape(ho_ConnectedRegions, out ho_SelectedRegions3, (new HTuple("area")).TupleConcat(
+                "area_holes"), "and", (new HTuple(10)).TupleConcat(0), (new HTuple(130)).TupleConcat(0.0001));
+            ho_SelectedRegions4.Dispose();
+            HOperatorSet.SelectShape(ho_SelectedRegions3, out ho_SelectedRegions4, "max_diameter",
+                "and", 0, 20);
+            ho_spotDefects.Dispose();
+            HOperatorSet.SelectShape(ho_SelectedRegions4, out ho_spotDefects, "roundness", "and",
+                0.5, 1);
+
+            HOperatorSet.CountObj(ho_bumaoDefects, out hv_bumaoNumber);
+            HOperatorSet.CountObj(ho_spotDefects, out hv_spotNumber);
+
+            if ((int)(new HTuple(hv_bumaoNumber.TupleGreater(0))) != 0)
+            {
+                HOperatorSet.AreaCenter(ho_bumaoDefects, out hv_Area_bumao, out hv_Row_bumao,
+                    out hv_Column_bumao);
+                HTuple hv_Row_String = new HTuple(), hv_Column_String = new HTuple();
+                HOperatorSet.TupleString(hv_Row_bumao, "10.2f", out hv_Row_String);
+                HOperatorSet.TupleString(hv_Column_bumao, "10.2f", out hv_Column_String);
+                for (int i = 0; i < hv_Row_String.Length; i++)
+                {
+                    hv_DefectTypeCoordinate.Add(new string[] { "布毛", hv_Row_String[i], hv_Column_String[i] });
+                }
+            }
+
+            if ((int)(new HTuple(hv_spotNumber.TupleGreater(0))) != 0)
+            {
+                // 复用点光链路中的聚类策略：密集点簇判为手印，稀疏点保留为麻点
+                HOperatorSet.AreaCenter(ho_spotDefects, out hv_Area_spot, out hv_Row_spot, out hv_Column_spot);
+
+                int totalSpots = hv_Row_spot.Length;
+                double distanceThresholdPixels = Global.FingerprintDistanceThresholdMm * Global.PixelsPerMmAvg;
+
+                List<double> spotRows = new List<double>();
+                List<double> spotCols = new List<double>();
+                List<int> clusterIds = new List<int>();
+
+                for (int i = 0; i < totalSpots; i++)
+                {
+                    spotRows.Add(hv_Row_spot[i].D);
+                    spotCols.Add(hv_Column_spot[i].D);
+                    clusterIds.Add(-1);
+                }
+
+                int currentClusterId = 0;
+                for (int i = 0; i < totalSpots; i++)
+                {
+                    if (clusterIds[i] != -1)
+                    {
+                        continue;
+                    }
+
+                    List<int> clusterMembers = new List<int>();
+                    clusterMembers.Add(i);
+                    clusterIds[i] = currentClusterId;
+
+                    bool foundNew = true;
+                    while (foundNew)
+                    {
+                        foundNew = false;
+                        for (int j = 0; j < totalSpots; j++)
+                        {
+                            if (clusterIds[j] != -1)
+                            {
+                                continue;
+                            }
+
+                            bool isNearCluster = false;
+                            foreach (int memberIdx in clusterMembers)
+                            {
+                                double deltaRow = spotRows[j] - spotRows[memberIdx];
+                                double deltaCol = spotCols[j] - spotCols[memberIdx];
+                                double distance = Math.Sqrt(deltaRow * deltaRow + deltaCol * deltaCol);
+
+                                if (distance <= distanceThresholdPixels)
+                                {
+                                    isNearCluster = true;
+                                    break;
+                                }
+                            }
+
+                            if (isNearCluster)
+                            {
+                                clusterMembers.Add(j);
+                                clusterIds[j] = currentClusterId;
+                                foundNew = true;
+                            }
+                        }
+                    }
+
+                    currentClusterId++;
+                }
+
+                Dictionary<int, List<int>> clusters = new Dictionary<int, List<int>>();
+                for (int i = 0; i < totalSpots; i++)
+                {
+                    int cid = clusterIds[i];
+                    if (!clusters.ContainsKey(cid))
+                    {
+                        clusters[cid] = new List<int>();
+                    }
+                    clusters[cid].Add(i);
+                }
+
+                foreach (var cluster in clusters)
+                {
+                    int spotCount = cluster.Value.Count;
+                    if (spotCount >= Global.FingerprintMinSpotCount)
+                    {
+                        double avgRow = 0, avgCol = 0;
+                        foreach (int idx in cluster.Value)
+                        {
+                            avgRow += spotRows[idx];
+                            avgCol += spotCols[idx];
+                        }
+                        avgRow /= spotCount;
+                        avgCol /= spotCount;
+
+                        hv_DefectTypeCoordinate.Add(new string[] {
+                            "手印",
+                            avgRow.ToString("F2"),
+                            avgCol.ToString("F2")
+                        });
+                    }
+                    else
+                    {
+                        foreach (int idx in cluster.Value)
+                        {
+                            hv_DefectTypeCoordinate.Add(new string[] {
+                                "麻点",
+                                spotRows[idx].ToString("F2"),
+                                spotCols[idx].ToString("F2")
+                            });
+                        }
+                    }
+                }
+            }
+
             
 
             HOperatorSet.CountObj(ho_SelectedXLD, out hv_Number2);
@@ -436,8 +628,9 @@ namespace IndustryDemo.Controllerui
                 //hv_DefectTypeCoordinate += "瑕疵类型：划伤" + hv_bruiseCoordinate.ToString();
                 //hv_bruiseType = "瑕疵类型：划伤";
             }
-            if ((int)((new HTuple(hv_Number1.TupleEqual(0))).TupleAnd(new HTuple(hv_Number2.TupleEqual(
-                0)))) != 0)
+            if ((int)((new HTuple((new HTuple((new HTuple(hv_Number1.TupleEqual(0))).TupleAnd(
+                new HTuple(hv_Number2.TupleEqual(0))))).TupleAnd(new HTuple(hv_bumaoNumber.TupleEqual(
+                0))))).TupleAnd(new HTuple(hv_spotNumber.TupleEqual(0)))) != 0)
             {
                 hv_messages = "There is no flaw in the filter!";
                 hv_Type = "合格";
