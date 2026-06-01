@@ -1,1537 +1,0 @@
-Dependencies for Project 'IAP-MDK-V4.0.0', Target 'IAP-MDK-V4.0.0': (DO NOT MODIFY !)
-CompilerVersion: 6220000::V6.22::ARMCLANG
-F (..\app\app_exti.c)(0x5D01C1B8)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/app_exti.o -MMD)
-I (..\app\app_exti.h)(0x5C9639FC)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\PLC\plc_input.h)(0x5D70BAD8)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-F (..\app\app_tim.c)(0x5D7B51BA)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/app_tim.o -MMD)
-I (..\app\app_tim.h)(0x5D033C48)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\PLC\plc_motor.h)(0x601368AC)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-F (..\app\app_usart.c)(0x5D0988F0)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/app_usart.o -MMD)
-I (..\app\app_usart.h)(0x5C919434)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\modbus\mb_timer.h)(0x5CF5FD68)
-I (..\Middlewares\modbus\mb_serial.h)(0x5D072E7C)
-F (..\app\app_user.c)(0x5CECC0B8)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/app_user.o -MMD)
-I (..\app\app_user.h)(0x5C9193F2)
-I (..\app\app_config.h)(0x5C931328)
-I (..\app\app_type.h)(0x5C9A33B6)
-F (..\app\app_i2c.c)(0x5D07399A)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/app_i2c.o -MMD)
-I (..\app\app_i2c.h)(0x5D033C14)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (..\app\app_can.c)(0x5DB69EBC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/app_can.o -MMD)
-I (..\app\app_can.h)(0x5D073A02)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\PLC\plc_can.h)(0x5D075F48)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-F (../Src/main.c)(0x60403F88)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/main.o -MMD)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\modbus\mb_user.h)(0x5D072EEC)
-I (..\Middlewares\modbus\mb_port.h)(0x5D4BBB44)
-I (..\Middlewares\modbus\mb_proto.h)(0x5F588384)
-I (..\Middlewares\modbus\mb_frame.h)(0x5CECFF00)
-I (..\Middlewares\modbus\mb_serial.h)(0x5D072E7C)
-I (..\Middlewares\PLC\plc_user.h)(0x5D0309B6)
-I (..\Middlewares\PLC\plc_eep.h)(0x5D0359D0)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-F (../Src/stm32f1xx_it.c)(0x5D790976)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_it.o -MMD)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Inc\stm32f1xx_it.h)(0x5D790976)
-F (../Src/stm32f1xx_hal_msp.c)(0x5D790976)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_msp.o -MMD)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (startup_stm32f103xg.s)(0x5D79097E)(--cpu Cortex-M3 -g --pd "__MICROLIB SETA 1" --diag_suppress=A1950W-I.\RTE\_IAP-MDK-V4.0.0-IC:\Users\97826\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\Users\97826\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include--pd "__UVISION_VERSION SETA 541"--pd "STM32F10X_XL SETA 1"--pd "_RTE_ SETA 1"--list startup_stm32f103xg.lst--xref -o iap-mdk-v4.0.0\startup_stm32f103xg.o--depend iap-mdk-v4.0.0\startup_stm32f103xg.d)
-F (..\Middlewares\PLC\plc_user.c)(0x5F5592BE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/plc_user.o -MMD)
-I (..\Middlewares\PLC\plc_user.h)(0x5D0309B6)
-I (..\Middlewares\PLC\plc_flow.h)(0x5D4A967E)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\PLC\plc_test.h)(0x60890784)
-I (..\Middlewares\PLC\plc_input.h)(0x5D70BAD8)
-I (..\Middlewares\PLC\plc_switch.h)(0x5D8DBABC)
-I (..\Middlewares\PLC\plc_bridge.h)(0x5D7B4E34)
-I (..\Middlewares\PLC\plc_beep.h)(0x5D021A9E)
-I (..\Middlewares\PLC\plc_delay.h)(0x5D70C6C6)
-I (..\Middlewares\PLC\plc_motor.h)(0x601368AC)
-I (..\Middlewares\PLC\plc_button.h)(0x5D8DBB04)
-I (..\Middlewares\PLC\plc_eep.h)(0x5D0359D0)
-I (..\Middlewares\PLC\plc_can.h)(0x5D075F48)
-F (..\Middlewares\PLC\plc_flow.c)(0x5F52078C)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/plc_flow.o -MMD)
-I (..\Middlewares\PLC\plc_flow.h)(0x5D4A967E)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\PLC\plc_switch.h)(0x5D8DBABC)
-I (..\Middlewares\PLC\plc_input.h)(0x5D70BAD8)
-I (..\Middlewares\PLC\plc_bridge.h)(0x5D7B4E34)
-I (..\Middlewares\PLC\plc_beep.h)(0x5D021A9E)
-I (..\Middlewares\PLC\plc_delay.h)(0x5D70C6C6)
-I (..\Middlewares\PLC\plc_motor.h)(0x601368AC)
-I (..\Middlewares\PLC\plc_eep.h)(0x5D0359D0)
-I (..\Middlewares\modbus\mb_master.h)(0x5D4D221A)
-I (..\Middlewares\modbus\mb_cb.h)(0x5D7A08B2)
-F (..\Middlewares\PLC\plc_modbus.c)(0x5D7B518E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/plc_modbus.o -MMD)
-I (..\Middlewares\PLC\plc_modbus.h)(0x5CF8834C)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\PLC\plc_input.h)(0x5D70BAD8)
-I (..\Middlewares\PLC\plc_switch.h)(0x5D8DBABC)
-I (..\Middlewares\PLC\plc_bridge.h)(0x5D7B4E34)
-I (..\Middlewares\PLC\plc_beep.h)(0x5D021A9E)
-I (..\Middlewares\PLC\plc_motor.h)(0x601368AC)
-I (..\Middlewares\PLC\plc_eep.h)(0x5D0359D0)
-F (..\Middlewares\PLC\plc_input.c)(0x5D889358)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/plc_input.o -MMD)
-I (..\Middlewares\PLC\plc_input.h)(0x5D70BAD8)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-F (..\Middlewares\PLC\plc_switch.c)(0x5F571F94)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/plc_switch.o -MMD)
-I (..\Middlewares\PLC\plc_switch.h)(0x5D8DBABC)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\PLC\plc_input.h)(0x5D70BAD8)
-F (..\Middlewares\PLC\plc_beep.c)(0x5D021A80)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/plc_beep.o -MMD)
-I (..\Middlewares\PLC\plc_beep.h)(0x5D021A9E)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-F (..\Middlewares\PLC\plc_delay.c)(0x5D70C6C0)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/plc_delay.o -MMD)
-I (..\Middlewares\PLC\plc_delay.h)(0x5D70C6C6)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-F (..\Middlewares\PLC\plc_button.c)(0x5D8EC3E0)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/plc_button.o -MMD)
-I (..\Middlewares\PLC\plc_button.h)(0x5D8DBB04)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\PLC\plc_input.h)(0x5D70BAD8)
-I (..\Middlewares\PLC\plc_switch.h)(0x5D8DBABC)
-I (..\Middlewares\modbus\mb_cb.h)(0x5D7A08B2)
-F (..\Middlewares\PLC\plc_eep.c)(0x5D6F2EB6)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/plc_eep.o -MMD)
-I (..\Middlewares\PLC\plc_eep.h)(0x5D0359D0)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-F (..\Middlewares\PLC\plc_can.c)(0x5D09CD4A)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/plc_can.o -MMD)
-I (..\Middlewares\PLC\plc_can.h)(0x5D075F48)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-F (..\Middlewares\PLC\plc_test.c)(0x614D9200)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/plc_test.o -MMD)
-I (..\Middlewares\PLC\plc_switch.h)(0x5D8DBABC)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\PLC\plc_input.h)(0x5D70BAD8)
-I (..\Middlewares\PLC\plc_bridge.h)(0x5D7B4E34)
-I (..\Middlewares\PLC\plc_beep.h)(0x5D021A9E)
-I (..\Middlewares\PLC\plc_delay.h)(0x5D70C6C6)
-I (..\Middlewares\PLC\plc_motor.h)(0x601368AC)
-I (..\Middlewares\PLC\plc_test.h)(0x60890784)
-I (..\Middlewares\modbus\mb_cb.h)(0x5D7A08B2)
-I (..\Middlewares\modbus\mb_master.h)(0x5D4D221A)
-I (..\Middlewares\PLC\plc_button.h)(0x5D8DBB04)
-F (..\Middlewares\PLC\plc_bridge.c)(0x5D7B4F1E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/plc_bridge.o -MMD)
-I (..\Middlewares\PLC\plc_bridge.h)(0x5D7B4E34)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-F (..\Middlewares\PLC\plc_motor.c)(0x608A526C)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/plc_motor.o -MMD)
-I (..\Middlewares\PLC\plc_test.h)(0x60890784)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\PLC\plc_motor.h)(0x601368AC)
-I (..\Middlewares\PLC\plc_input.h)(0x5D70BAD8)
-I (..\app\app_tim.h)(0x5D033C48)
-F (..\Middlewares\modbus\mb_user.c)(0x5F509A50)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/mb_user.o -MMD)
-I (..\Middlewares\modbus\mb_user.h)(0x5D072EEC)
-I (..\Middlewares\modbus\mb_port.h)(0x5D4BBB44)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\modbus\mb_proto.h)(0x5F588384)
-I (..\Middlewares\modbus\mb_frame.h)(0x5CECFF00)
-I (..\Middlewares\modbus\mb_serial.h)(0x5D072E7C)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\modbus\mb_tcp.h)(0x5D08525A)
-F (..\Middlewares\modbus\mb_port.c)(0x5D6DD978)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/mb_port.o -MMD)
-I (..\Middlewares\modbus\mb_port.h)(0x5D4BBB44)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\modbus\mb_proto.h)(0x5F588384)
-I (..\Middlewares\modbus\mb_frame.h)(0x5CECFF00)
-I (..\Middlewares\modbus\mb_serial.h)(0x5D072E7C)
-I (..\Middlewares\modbus\mb_err.h)(0x5CEF53D8)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_ascii.h)(0x5CF4C0E8)
-I (..\Middlewares\modbus\mb_tcp.h)(0x5D08525A)
-I (..\Middlewares\modbus\mb_func_holding.h)(0x5D4CEF48)
-F (..\Middlewares\modbus\mb_cb.c)(0x603E3EC2)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/mb_cb.o -MMD)
-I (..\Middlewares\modbus\mb_cb.h)(0x5D7A08B2)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\PLC\plc_modbus.h)(0x5CF8834C)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-F (..\Middlewares\modbus\mb_serial.c)(0x5D4CEDCC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/mb_serial.o -MMD)
-I (..\Middlewares\modbus\mb_serial.h)(0x5D072E7C)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\ethernet\eth_socket.h)(0x5D09A702)
-I (..\Middlewares\ethernet\eth_type.h)(0x5C998652)
-I (..\Middlewares\modbus\mb_master.h)(0x5D4D221A)
-F (..\Middlewares\modbus\mb_timer.c)(0x5D072E08)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/mb_timer.o -MMD)
-I (..\Middlewares\modbus\mb_timer.h)(0x5CF5FD68)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-F (..\Middlewares\modbus\mb_rtu.c)(0x5D4BE01C)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/mb_rtu.o -MMD)
-I (..\Middlewares\modbus\mb_rtu.h)(0x5D1AB7F4)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\modbus\mb_serial.h)(0x5D072E7C)
-I (..\Middlewares\modbus\mb_timer.h)(0x5CF5FD68)
-I (..\Middlewares\modbus\mb_crc.h)(0x5CEE4F06)
-I (..\Middlewares\PLC\plc_modbus.h)(0x5CF8834C)
-I (..\Middlewares\PLC\plc_type.h)(0x5CFF556C)
-I (..\Inc\main.h)(0x5D790978)
-I (..\Middlewares\PLC\plc_cfg.h)(0x5D7B518E)
-F (..\Middlewares\modbus\mb_ascii.c)(0x5D072E7C)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/mb_ascii.o -MMD)
-I (..\Middlewares\modbus\mb_ascii.h)(0x5CF4C0E8)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\modbus\mb_crc.h)(0x5CEE4F06)
-I (..\Middlewares\modbus\mb_serial.h)(0x5D072E7C)
-I (..\Middlewares\modbus\mb_timer.h)(0x5CF5FD68)
-F (..\Middlewares\modbus\mb_tcp.c)(0x5D09A7CC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/mb_tcp.o -MMD)
-I (..\Middlewares\modbus\mb_tcp.h)(0x5D08525A)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\modbus\mb_serial.h)(0x5D072E7C)
-I (..\Middlewares\modbus\mb_timer.h)(0x5CF5FD68)
-I (..\Middlewares\ethernet\eth_user.h)(0x5D084606)
-I (..\Middlewares\ethernet\eth_socket.h)(0x5D09A702)
-I (..\Middlewares\ethernet\eth_w5500.h)(0x5C99A5A6)
-I (..\Middlewares\ethernet\eth_type.h)(0x5C998652)
-F (..\Middlewares\modbus\mb_func_holding.c)(0x5D4CEF28)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/mb_func_holding.o -MMD)
-I (..\Middlewares\modbus\mb_func_holding.h)(0x5D4CEF48)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\modbus\mb_proto.h)(0x5F588384)
-I (..\Middlewares\modbus\mb_frame.h)(0x5CECFF00)
-I (..\Middlewares\modbus\mb_serial.h)(0x5D072E7C)
-I (..\Middlewares\modbus\mb_cb.h)(0x5D7A08B2)
-F (..\Middlewares\modbus\mb_utils.c)(0x5CECFB6E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/mb_utils.o -MMD)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\modbus\mb_proto.h)(0x5F588384)
-F (..\Middlewares\modbus\mb_crc.c)(0x5CEF7184)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/mb_crc.o -MMD)
-I (..\Middlewares\modbus\mb_crc.h)(0x5CEE4F06)
-F (..\Middlewares\modbus\mb_err.c)(0x5CEF53E0)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/mb_err.o -MMD)
-I (..\Middlewares\modbus\mb_err.h)(0x5CEF53D8)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\modbus\mb_proto.h)(0x5F588384)
-F (..\Middlewares\modbus\mb_master.c)(0x5F50B930)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/mb_master.o -MMD)
-I (..\Middlewares\modbus\mb_crc.h)(0x5CEE4F06)
-I (..\Middlewares\modbus\mb_serial.h)(0x5D072E7C)
-I (..\Middlewares\modbus\mb_type.h)(0x5D4D1FCC)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\modbus\mb_config.h)(0x5CEF70F6)
-I (..\Middlewares\modbus\mb_master.h)(0x5D4D221A)
-F (..\Middlewares\ethernet\eth_user.c)(0x5D099470)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/eth_user.o -MMD)
-I (..\Middlewares\ethernet\eth_user.h)(0x5D084606)
-I (..\Middlewares\ethernet\eth_spi.h)(0x5D0994BC)
-I (..\Middlewares\ethernet\eth_w5500.h)(0x5C99A5A6)
-I (..\Middlewares\ethernet\eth_type.h)(0x5C998652)
-I (..\Middlewares\ethernet\eth_socket.h)(0x5D09A702)
-F (..\Middlewares\ethernet\eth_socket.c)(0x5D1AB040)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/eth_socket.o -MMD)
-I (..\Middlewares\ethernet\eth_spi.h)(0x5D0994BC)
-I (..\Middlewares\ethernet\eth_w5500.h)(0x5C99A5A6)
-I (..\Middlewares\ethernet\eth_type.h)(0x5C998652)
-I (..\Middlewares\ethernet\eth_socket.h)(0x5D09A702)
-F (..\Middlewares\ethernet\eth_spi.c)(0x5D098EBE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/eth_spi.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-I (..\Middlewares\ethernet\eth_spi.h)(0x5D0994BC)
-I (..\Inc\main.h)(0x5D790978)
-F (..\Middlewares\ethernet\eth_type.c)(0x5D089B6A)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/eth_type.o -MMD)
-I (..\Middlewares\ethernet\eth_type.h)(0x5C998652)
-F (..\Middlewares\ethernet\eth_w5500.c)(0x5D098EBE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/eth_w5500.o -MMD)
-I (..\Middlewares\ethernet\eth_spi.h)(0x5D0994BC)
-I (..\Middlewares\ethernet\eth_type.h)(0x5C998652)
-I (..\Middlewares\ethernet\eth_w5500.h)(0x5C99A5A6)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c)(0x5D790966)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_gpio_ex.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_can.c)(0x5D790964)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_can.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c)(0x5D790966)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_i2c.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c)(0x5D790966)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_spi.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi_ex.c)(0x5D790966)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_spi_ex.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c)(0x5D790966)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_tim.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c)(0x5D790966)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_tim_ex.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c)(0x5D790966)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_uart.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c)(0x5F433820)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c)(0x5D790966)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_rcc.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c)(0x5D790966)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_rcc_ex.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c)(0x5D790966)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_gpio.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c)(0x5D790966)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_dma.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c)(0x5D790964)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_cortex.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c)(0x5D790966)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_pwr.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c)(0x5D790966)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_flash.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c)(0x5D790966)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/stm32f1xx_hal_flash_ex.o -MMD)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)
-F (../Src/system_stm32f1xx.c)(0x5CE36840)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ../app -I ../Middlewares/ethernet -I ../Middlewares/PLC -I ../Middlewares/modbus-I./RTE/_IAP-MDK-V4.0.0-IC:/Users/97826/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/97826/AppData/Local/Arm/Packs/Keil/STM32F1xx_DFP/2.4.1/Device/Include-D__UVISION_VERSION="541" -DSTM32F10X_XL -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xG-o iap-mdk-v4.0.0/system_stm32f1xx.o -MMD)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h)(0x5D790962)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xg.h)(0x5D790962)
-I (..\Drivers\CMSIS\Include\core_cm3.h)(0x5D790964)
-I (..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h)(0x5D790962)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h)(0x5D790964)
-I (..\Inc\stm32f1xx_hal_conf.h)(0x5D790978)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_gpio_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h)(0x5D790964)
-I (..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h)(0x5D790964)

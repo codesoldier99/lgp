@@ -1,0 +1,158 @@
+//计算半径长度
+                                                    if ((int)(new HTuple(hv_ClassIndex.TupleEqual(1))) != 0)
+                                                    {
+                                                        hv_Row11.Dispose(); hv_Column11.Dispose(); hv_Row21.Dispose(); hv_Column21.Dispose(); hv_Diameter.Dispose();
+                                                        HOperatorSet.DiameterRegion(ho_ConnectedRegions, out hv_Row11,
+                                                            out hv_Column11, out hv_Row21, out hv_Column21, out hv_Diameter);
+                                                        #region 这里是把新检测的数据给存入进去
+                                                        double picx, picy, trayx, trayy;
+                                                        int trayxnum, trayynum;
+                                                        zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
+                                                        zy = hv_Column.TupleSelect(hv_ConnectIndex).ToString();
+
+                                                        //#region 判断瑕疵是否在圆内
+                                                        //if (hv_Row2 == null || hv_Column2 == null || hv_CRadius == null || hv_Row == null || hv_Column == null)
+                                                        //    continue;
+                                                        //else
+                                                        //{
+                                                        //    double zx1, zy1, circle_x, circle_y, circle_r; //圆心坐标半径
+                                                        //    zx1 = Convert.ToDouble(zx);
+                                                        //    zy1 = Convert.ToDouble(zy);
+                                                        //    circle_x = Convert.ToDouble(hv_Row2.TupleSelect(0).ToString());
+                                                        //    circle_y = Convert.ToDouble(hv_Column2.TupleSelect(0).ToString());
+                                                        //    circle_r = Convert.ToDouble(hv_CRadius.TupleSelect(0).ToString());
+                                                        //    //MessageBox.Show(Convert.ToString(circle_r));
+                                                        //    if (Math.Sqrt((zx1 - circle_x) * (zx1 - circle_x) + (zy1 - circle_y) * (zy1 - circle_y)) > circle_r * 0.95)
+                                                        //        continue;
+                                                        //}
+                                                        //#endregion
+
+                                                        picx = Math.Round(Convert.ToDouble(zx), 2);
+                                                        picy = Math.Round(Convert.ToDouble(zy), 2);
+                                                        int cameraId, row, line;
+                                                        string[] split = hv_BaseName.TupleSplit("-");
+                                                        cameraId = Convert.ToInt32(split[0]);
+                                                        row = Convert.ToInt32(split[1]);
+                                                        line = Convert.ToInt32(split[2]);
+                                                        double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
+                                                        if (xy[0] > 0)
+                                                        {
+                                                            trayx = Math.Round(xy[0], 2);
+                                                            trayy = Math.Round(xy[1], 2);
+                                                            trayxnum = Global.optRow - (int)xy[3] - 1;
+                                                            trayynum = Global.optLine - (int)xy[2] - 1;
+                                                            //MySqlCommand cmd2;
+
+
+                                                            if (hv_Area.TupleSelect(0) <= 150000 && trayx > 0 && trayy > 0 && trayy < 340 && trayx < 350 && trayxnum >= 0 && trayxnum < Global.optRow && trayynum >= 0 && trayynum < Global.optLine && hv_ClassIndex != 1)
+                                                            {
+                                                                //MessageBox.Show(trayxnum + "," + trayynum);
+                                                                //conn.Open();
+                                                                Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,scratchLength) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Diameter + "');";
+                                                                //cmd2 = new MySqlCommand(Query3, conn);
+                                                                //cmd2.ExecuteNonQuery();
+                                                                //conn.Close();
+                                                                ////查询照片检测情况
+                                                                tangleflag = false;
+                                                            }
+                                                        }
+                                                        #endregion  新增数据结束
+                                                    }
+                                                    else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(7))) != 0)
+                                                    {
+                                                        hv_Row3.Dispose(); hv_Column3.Dispose(); hv_Radius3.Dispose();
+                                                        HOperatorSet.SmallestCircle(ho_ConnectedRegions, out hv_Row3, out hv_Column3,
+                                                            out hv_Radius3);
+                                                        #region 这里是把新检测的数据给存入进去
+                                                        double picx, picy, trayx, trayy;
+                                                        int trayxnum, trayynum;
+                                                        zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
+                                                        zy = hv_Column.TupleSelect(hv_ConnectIndex).ToString();
+
+                                                        //#region 判断瑕疵是否在圆内
+                                                        //if (hv_Row2 == null || hv_Column2 == null || hv_CRadius == null || hv_Row == null || hv_Column == null)
+                                                        //    continue;
+                                                        //else
+                                                        //{
+                                                        //    double zx1, zy1, circle_x, circle_y, circle_r; //圆心坐标半径
+                                                        //    zx1 = Convert.ToDouble(zx);
+                                                        //    zy1 = Convert.ToDouble(zy);
+                                                        //    circle_x = Convert.ToDouble(hv_Row2.TupleSelect(0).ToString());
+                                                        //    circle_y = Convert.ToDouble(hv_Column2.TupleSelect(0).ToString());
+                                                        //    circle_r = Convert.ToDouble(hv_CRadius.TupleSelect(0).ToString());
+                                                        //    //MessageBox.Show(Convert.ToString(circle_r));
+                                                        //    if (Math.Sqrt((zx1 - circle_x) * (zx1 - circle_x) + (zy1 - circle_y) * (zy1 - circle_y)) > circle_r * 0.95)
+                                                        //        continue;
+                                                        //}
+                                                        //#endregion
+
+                                                        picx = Math.Round(Convert.ToDouble(zx), 2);
+                                                        picy = Math.Round(Convert.ToDouble(zy), 2);
+                                                        int cameraId, row, line;
+                                                        string[] split = hv_BaseName.TupleSplit("-");
+                                                        cameraId = Convert.ToInt32(split[0]);
+                                                        row = Convert.ToInt32(split[1]);
+                                                        line = Convert.ToInt32(split[2]);
+                                                        double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
+                                                        if (xy[0] > 0)
+                                                        {
+                                                            trayx = Math.Round(xy[0], 2);
+                                                            trayy = Math.Round(xy[1], 2);
+                                                            trayxnum = Global.optRow - (int)xy[3] - 1;
+                                                            trayynum = Global.optLine - (int)xy[2] - 1;
+                                                            //MySqlCommand cmd2;
+
+
+                                                            if (hv_Area.TupleSelect(0) <= 150000 && trayx > 0 && trayy > 0 && trayy < 340 && trayx < 350 && trayxnum >= 0 && trayxnum < Global.optRow && trayynum >= 0 && trayynum < Global.optLine && hv_ClassIndex != 1)
+                                                            {
+                                                                //MessageBox.Show(trayxnum + "," + trayynum);
+                                                                //conn.Open();
+                                                                Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3 + "');";
+                                                                //cmd2 = new MySqlCommand(Query3, conn);
+                                                                //cmd2.ExecuteNonQuery();
+                                                                //conn.Close();
+                                                                ////查询照片检测情况
+                                                                tangleflag = false;
+                                                            }
+                                                        }
+                                                        #endregion  新增数据结束
+                                                    }
+                                                    else
+                                                    {
+                                                        #region 这里是把新检测的数据给存入进去
+                                                        double picx, picy, trayx, trayy;
+                                                        int trayxnum, trayynum;
+                                                        zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
+                                                        zy = hv_Column.TupleSelect(hv_ConnectIndex).ToString();
+
+                                                        picx = Math.Round(Convert.ToDouble(zx), 2);
+                                                        picy = Math.Round(Convert.ToDouble(zy), 2);
+                                                        int cameraId, row, line;
+                                                        string[] split = hv_BaseName.TupleSplit("-");
+                                                        cameraId = Convert.ToInt32(split[0]);
+                                                        row = Convert.ToInt32(split[1]);
+                                                        line = Convert.ToInt32(split[2]);
+                                                        double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
+                                                        if (xy[0] > 0)
+                                                        {
+                                                            trayx = Math.Round(xy[0], 2);
+                                                            trayy = Math.Round(xy[1], 2);
+                                                            trayxnum = Global.optRow - (int)xy[3] - 1;
+                                                            trayynum = Global.optLine - (int)xy[2] - 1;
+                                                            //MySqlCommand cmd2;
+
+
+                                                            if (hv_Area.TupleSelect(0) <= 150000 && trayx > 0 && trayy > 0 && trayy < 340 && trayx < 350 && trayxnum >= 0 && trayxnum < Global.optRow && trayynum >= 0 && trayynum < Global.optLine && hv_ClassIndex != 1)
+                                                            {
+                                                                //MessageBox.Show(trayxnum + "," + trayynum);
+                                                                //conn.Open();
+                                                                Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "');";
+                                                                //cmd2 = new MySqlCommand(Query3, conn);
+                                                                //cmd2.ExecuteNonQuery();
+                                                                //conn.Close();
+                                                                ////查询照片检测情况
+                                                                circleflag = false;
+                                                            }
+                                                        }
+                                                        #endregion  新增数据结束
+                                                    }
