@@ -10,9 +10,7 @@
 //
 
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Text;
 using HalconDotNet;
 using MySql.Data.MySqlClient;
 
@@ -25,298 +23,6 @@ namespace IndustryDemo.Controllerui
         int y;
         string zx, zy, fileBaseName;
         private string err1;
-        public static Action<string, DateTime, DateTime, long> TimingRecorder;
-
-        private DateTime StartDLStep(out System.Diagnostics.Stopwatch stopwatch)
-        {
-            DateTime startTime = DateTime.Now;
-            stopwatch = System.Diagnostics.Stopwatch.StartNew();
-            return startTime;
-        }
-
-        private void FinishDLStep(string name, DateTime startTime, System.Diagnostics.Stopwatch stopwatch)
-        {
-            stopwatch.Stop();
-            AddDLTiming(name, startTime, DateTime.Now, stopwatch.ElapsedMilliseconds);
-        }
-
-        private void AddDLTiming(string name, DateTime startTime, DateTime endTime, long elapsedMilliseconds)
-        {
-            Action<string, DateTime, DateTime, long> timingRecorder = TimingRecorder;
-            if (timingRecorder == null)
-            {
-                return;
-            }
-            try
-            {
-                timingRecorder(name, startTime, endTime, elapsedMilliseconds);
-            }
-            catch
-            {
-            }
-        }
-
-        private void AddDLTimingPoint(string name)
-        {
-            DateTime now = DateTime.Now;
-            AddDLTiming(name, now, now, 0);
-        }
-
-        private string BuildDLTimingName(string picDir, string stepName)
-        {
-            string cameraName = "unknown";
-            try
-            {
-                string normalized = (picDir ?? "").Replace('\\', '/');
-                string[] parts = normalized.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-                for (int i = parts.Length - 1; i >= 0; i--)
-                {
-                    if (parts[i].StartsWith("camera", StringComparison.OrdinalIgnoreCase))
-                    {
-                        cameraName = parts[i];
-                        break;
-                    }
-                }
-                if (cameraName == "unknown" && parts.Length > 0)
-                {
-                    cameraName = parts[parts.Length - 1];
-                }
-            }
-            catch
-            {
-            }
-            return "DL-detail-" + cameraName + "-" + stepName;
-        }
-
-        private void AddDLTimingDuration(string name, long elapsedMilliseconds)
-        {
-            if (elapsedMilliseconds < 0)
-            {
-                elapsedMilliseconds = 0;
-            }
-            DateTime endTime = DateTime.Now;
-            AddDLTiming(name, endTime.AddMilliseconds(-elapsedMilliseconds), endTime, elapsedMilliseconds);
-        }
-
-        private double[] TimedGetDefLoc(int cameraId, int row, int col, double defX, double defY, ref long elapsedMilliseconds, ref int callCount)
-        {
-            System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
-            try
-            {
-                return getDefLoc(cameraId, row, col, defX, defY);
-            }
-            finally
-            {
-                stopwatch.Stop();
-                elapsedMilliseconds += stopwatch.ElapsedMilliseconds;
-                callCount++;
-            }
-        }
-
-        private string AppendTimedDefectionSql(string currentSql, string appendSql, ref long elapsedMilliseconds, ref int appendCount)
-        {
-            System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
-            try
-            {
-                return currentSql + appendSql;
-            }
-            finally
-            {
-                stopwatch.Stop();
-                elapsedMilliseconds += stopwatch.ElapsedMilliseconds;
-                appendCount++;
-            }
-        }
-
-        private class ImageDetectionDbRecord
-        {
-            public string Query3;
-            public string BaseName;
-            public string PicDir;
-        }
-
-        private void AddImageDetectionResult(List<ImageDetectionDbRecord> batchResults, string query3, string baseName, string picDir)
-        {
-            if (batchResults == null)
-            {
-                return;
-            }
-
-            batchResults.Add(new ImageDetectionDbRecord
-            {
-                Query3 = query3 ?? "",
-                BaseName = baseName ?? "",
-                PicDir = picDir ?? ""
-            });
-        }
-
-        private string EscapeSqlValue(string value)
-        {
-            return (value ?? "").Replace("'", "''");
-        }
-
-        private HashSet<string> LoadExistingPictureNames(MySqlCommand comm)
-        {
-            HashSet<string> existingPictureNames = new HashSet<string>();
-            comm.CommandText = "select picName from picture WHERE qrcode='" + EscapeSqlValue(Global.qrCode) + "' and detectiontime='" + EscapeSqlValue(Global.detectiontime) + "'";
-            using (MySqlDataReader reader = comm.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    if (!reader.IsDBNull(0))
-                    {
-                        existingPictureNames.Add(reader.GetString(0));
-                    }
-                }
-            }
-            return existingPictureNames;
-        }
-
-        private void AppendBatchSql(MySqlCommand comm, StringBuilder sqlBuilder, string sql)
-        {
-            const int maxCommandLength = 262144;
-            if (string.IsNullOrEmpty(sql))
-            {
-                return;
-            }
-
-            if (sqlBuilder.Length > 0 && sqlBuilder.Length + sql.Length > maxCommandLength)
-            {
-                comm.CommandText = sqlBuilder.ToString();
-                comm.ExecuteNonQuery();
-                sqlBuilder.Length = 0;
-            }
-
-            sqlBuilder.Append(sql);
-        }
-
-        private void ExecuteBatchSql(MySqlCommand comm, StringBuilder sqlBuilder)
-        {
-            if (sqlBuilder.Length == 0)
-            {
-                return;
-            }
-
-            comm.CommandText = sqlBuilder.ToString();
-            comm.ExecuteNonQuery();
-            sqlBuilder.Length = 0;
-        }
-
-        private void SaveCameraDetectionResults(MySqlConnection conn, MySqlCommand comm, List<ImageDetectionDbRecord> batchResults)
-        {
-            if (batchResults == null || batchResults.Count == 0)
-            {
-                return;
-            }
-
-            if (conn.State != ConnectionState.Open)
-            {
-                conn.Open();
-            }
-
-            comm.Connection = conn;
-            using (MySqlTransaction transaction = conn.BeginTransaction())
-            {
-                comm.Transaction = transaction;
-                try
-                {
-                    HashSet<string> existingPictureNames = LoadExistingPictureNames(comm);
-                    StringBuilder sqlBuilder = new StringBuilder();
-
-                    for (int i = 0; i < batchResults.Count; i++)
-                    {
-                        ImageDetectionDbRecord record = batchResults[i];
-                        string baseName = EscapeSqlValue(record.BaseName);
-                        string picDir = EscapeSqlValue(record.PicDir);
-                        string query2;
-
-                        if (existingPictureNames.Contains(record.BaseName))
-                        {
-                            query2 = "update picture set picStatus=picStatus+1 , time=now() WHERE qrcode='" + EscapeSqlValue(Global.qrCode) + "' and detectiontime='" + EscapeSqlValue(Global.detectiontime) + "' and picName='" + baseName + "';";
-                        }
-                        else
-                        {
-                            query2 = "insert into picture(detectiontime,qrcode,picName,path,time,picStatus) value('" + EscapeSqlValue(Global.detectiontime) + "','" + EscapeSqlValue(Global.qrCode) + "','" + baseName + "','" + picDir + "',now(),1);";
-                            existingPictureNames.Add(record.BaseName);
-                        }
-
-                        AppendBatchSql(comm, sqlBuilder, record.Query3 + query2);
-                    }
-
-                    ExecuteBatchSql(comm, sqlBuilder);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    try
-                    {
-                        transaction.Rollback();
-                    }
-                    catch
-                    {
-                    }
-                    throw;
-                }
-                finally
-                {
-                    comm.Transaction = null;
-                }
-            }
-        }
-
-        private void SaveImageDetectionResult(MySqlConnection conn, MySqlCommand comm, string query3, string baseName, string picDir)
-        {
-            string query2;
-            int status = 0;
-
-            if (conn.State != ConnectionState.Open)
-            {
-                conn.Open();
-            }
-
-            comm.Connection = conn;
-            comm.CommandText = "select count(picStatus) from picture WHERE qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "' and picName='" + baseName + "'";
-            object statusValue = comm.ExecuteScalar();
-            if (statusValue != null && statusValue != DBNull.Value)
-            {
-                status = Convert.ToInt32(statusValue);
-            }
-
-            if (status == 0)
-            {
-                query2 = "insert into picture(detectiontime,qrcode,picName,path,time,picStatus) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + baseName + "','" + picDir + "',now(),1)";
-            }
-            else
-            {
-                query2 = "update picture set picStatus=picStatus+1 , time=now() WHERE qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "' and picName='" + baseName + "'";
-            }
-
-            comm.CommandText = query3 + query2;
-            comm.ExecuteNonQuery();
-        }
-
-        private void CloseDetectionConnection(MySqlConnection conn, MySqlCommand comm)
-        {
-            try
-            {
-                if (conn != null && conn.State != ConnectionState.Closed)
-                {
-                    conn.Close();
-                }
-            }
-            catch
-            {
-            }
-
-            if (comm != null)
-            {
-                comm.Dispose();
-            }
-            if (conn != null)
-            {
-                conn.Dispose();
-            }
-        }
         public int getX() { return x; }
 
         public int getY() { return y; }
@@ -324,6 +30,376 @@ namespace IndustryDemo.Controllerui
         public string getZx() { return zx; }
         public string getZy() { return zy; }
         public string getFileBaseName() { return fileBaseName; }
+
+        // Surface ghost filtering is limited to corrosion (6) and fingerprint (8).
+        // Set this switch to false to restore the original model output without removing code.
+        private static readonly bool SurfaceGhostFilterEnabled = true;
+        private const int CorrosionClassId = 6;
+        private const int FingerprintClassId = 8;
+        private const double SurfaceRingInnerRadius = 5.0;
+        private const double SurfaceRingOuterRadius = 35.0;
+        private const double SurfaceMinBackgroundArea = 50.0;
+        private const double SurfaceLapTop1MeanThreshold = 56.0;
+        private const double SurfaceLapTop1RatioThreshold = 5.6;
+        private const double SurfaceLapTop5MeanThreshold = 34.0;
+
+        /// <summary>
+        /// Removes opposite-surface ghost components from corrosion/fingerprint classes.
+        /// All other classes pass through unchanged and object order remains aligned with classIds.
+        /// </summary>
+        private void FilterSurfaceGhostRegions(HObject originalImageBatch, HTuple sampleIndex,
+            HObject segmentationImage, HObject classRegions, HTuple classIds,
+            out HObject filteredClassRegions)
+        {
+            HObject originalImage = null, grayImage = null, laplaceImage = null;
+            HObject originalDomain = null, allDefectsSeg = null, allDefectsOrig = null;
+            HObject classRegion = null, connectedRegions = null, currentRegion = null;
+            HObject keptComponents = null, filteredClassRegion = null, concatenatedRegions = null;
+            HTuple numChannels = new HTuple(), imageType = new HTuple();
+            HTuple originalWidth = new HTuple(), originalHeight = new HTuple();
+            HTuple segmentationWidth = new HTuple(), segmentationHeight = new HTuple();
+            HTuple homMatIdentity = new HTuple(), homMatScale = new HTuple();
+            HTuple numConnected = new HTuple(), numKept = new HTuple();
+            HTuple targetArea = new HTuple();
+            int targetComponentCount = 0, keptComponentCount = 0;
+
+            HOperatorSet.GenEmptyObj(out filteredClassRegions);
+            HOperatorSet.GenEmptyObj(out originalImage);
+            HOperatorSet.GenEmptyObj(out grayImage);
+            HOperatorSet.GenEmptyObj(out laplaceImage);
+            HOperatorSet.GenEmptyObj(out originalDomain);
+            HOperatorSet.GenEmptyObj(out allDefectsSeg);
+            HOperatorSet.GenEmptyObj(out allDefectsOrig);
+            HOperatorSet.GenEmptyObj(out classRegion);
+            HOperatorSet.GenEmptyObj(out connectedRegions);
+            HOperatorSet.GenEmptyObj(out currentRegion);
+            HOperatorSet.GenEmptyObj(out keptComponents);
+            HOperatorSet.GenEmptyObj(out filteredClassRegion);
+            HOperatorSet.GenEmptyObj(out concatenatedRegions);
+
+            try
+            {
+                if (!SurfaceGhostFilterEnabled)
+                {
+                    filteredClassRegions.Dispose();
+                    HOperatorSet.CopyObj(classRegions, out filteredClassRegions, 1, -1);
+                    return;
+                }
+
+                bool hasTargetRegion = false;
+                for (int classIndex = 0; classIndex < classIds.Length; classIndex++)
+                {
+                    int classId = classIds.TupleSelect(classIndex).I;
+                    if (classId != CorrosionClassId && classId != FingerprintClassId)
+                    {
+                        continue;
+                    }
+
+                    classRegion.Dispose();
+                    HOperatorSet.SelectObj(classRegions, out classRegion, classIndex + 1);
+                    targetArea.Dispose();
+                    HOperatorSet.RegionFeatures(classRegion, "area", out targetArea);
+                    if (targetArea.Length > 0 && targetArea.D > 0)
+                    {
+                        hasTargetRegion = true;
+                        break;
+                    }
+                }
+
+                if (!hasTargetRegion)
+                {
+                    filteredClassRegions.Dispose();
+                    HOperatorSet.CopyObj(classRegions, out filteredClassRegions, 1, -1);
+                    return;
+                }
+
+                originalImage.Dispose();
+                HOperatorSet.SelectObj(originalImageBatch, out originalImage, sampleIndex + 1);
+                HOperatorSet.CountChannels(originalImage, out numChannels);
+                if (numChannels.I == 3)
+                {
+                    grayImage.Dispose();
+                    HOperatorSet.Rgb1ToGray(originalImage, out grayImage);
+                }
+                else
+                {
+                    grayImage.Dispose();
+                    HOperatorSet.CopyImage(originalImage, out grayImage);
+                }
+
+                HOperatorSet.GetImageType(grayImage, out imageType);
+                if (imageType.S != "byte" && imageType.S != "uint2")
+                {
+                    HObject convertedGray;
+                    HOperatorSet.ConvertImageType(grayImage, out convertedGray, "byte");
+                    grayImage.Dispose();
+                    grayImage = convertedGray;
+                }
+
+                HOperatorSet.GetImageSize(grayImage, out originalWidth, out originalHeight);
+                HOperatorSet.GetImageSize(segmentationImage, out segmentationWidth, out segmentationHeight);
+                originalDomain.Dispose();
+                HOperatorSet.GetDomain(grayImage, out originalDomain);
+                laplaceImage.Dispose();
+                HOperatorSet.Laplace(grayImage, out laplaceImage, "absolute", 3, "n_8_isotropic");
+
+                HOperatorSet.HomMat2dIdentity(out homMatIdentity);
+                // HALCON affine matrices use X/column first and Y/row second.
+                HOperatorSet.HomMat2dScale(homMatIdentity,
+                    originalWidth.D / segmentationWidth.D,
+                    originalHeight.D / segmentationHeight.D,
+                    0, 0, out homMatScale);
+
+                allDefectsSeg.Dispose();
+                HOperatorSet.Threshold(segmentationImage, out allDefectsSeg, 1, 11);
+                allDefectsOrig.Dispose();
+                HOperatorSet.AffineTransRegion(allDefectsSeg, out allDefectsOrig,
+                    homMatScale, "nearest_neighbor");
+
+                for (int classIndex = 0; classIndex < classIds.Length; classIndex++)
+                {
+                    int classId = classIds.TupleSelect(classIndex).I;
+                    classRegion.Dispose();
+                    HOperatorSet.SelectObj(classRegions, out classRegion, classIndex + 1);
+
+                    filteredClassRegion.Dispose();
+                    if (classId != CorrosionClassId && classId != FingerprintClassId)
+                    {
+                        HOperatorSet.CopyObj(classRegion, out filteredClassRegion, 1, 1);
+                    }
+                    else
+                    {
+                        keptComponents.Dispose();
+                        HOperatorSet.GenEmptyObj(out keptComponents);
+                        connectedRegions.Dispose();
+                        HOperatorSet.Connection(classRegion, out connectedRegions);
+                        numConnected.Dispose();
+                        HOperatorSet.CountObj(connectedRegions, out numConnected);
+                        targetComponentCount += numConnected.I;
+
+                        for (int componentIndex = 1; componentIndex <= numConnected.I; componentIndex++)
+                        {
+                            currentRegion.Dispose();
+                            HOperatorSet.SelectObj(connectedRegions, out currentRegion, componentIndex);
+                            if (KeepSurfaceDefectRegion(currentRegion, laplaceImage, originalDomain,
+                                allDefectsOrig, homMatScale))
+                            {
+                                HObject newKeptComponents;
+                                HOperatorSet.ConcatObj(keptComponents, currentRegion, out newKeptComponents);
+                                keptComponents.Dispose();
+                                keptComponents = newKeptComponents;
+                                keptComponentCount++;
+                            }
+                        }
+
+                        numKept.Dispose();
+                        HOperatorSet.CountObj(keptComponents, out numKept);
+                        if (numKept.I > 0)
+                        {
+                            HOperatorSet.Union1(keptComponents, out filteredClassRegion);
+                        }
+                        else
+                        {
+                            HOperatorSet.GenEmptyRegion(out filteredClassRegion);
+                        }
+                    }
+
+                    concatenatedRegions.Dispose();
+                    HOperatorSet.ConcatObj(filteredClassRegions, filteredClassRegion,
+                        out concatenatedRegions);
+                    filteredClassRegions.Dispose();
+                    filteredClassRegions = concatenatedRegions;
+                    HOperatorSet.GenEmptyObj(out concatenatedRegions);
+                }
+
+                if (targetComponentCount > 0)
+                {
+                    System.Diagnostics.Trace.WriteLine(
+                        "Surface ghost filter: target=" + targetComponentCount +
+                        ", keep=" + keptComponentCount +
+                        ", remove=" + (targetComponentCount - keptComponentCount));
+                }
+            }
+            catch (HalconException ex)
+            {
+                // Fail open so a post-processing error cannot stop production or delete a defect.
+                System.Diagnostics.Trace.WriteLine("Surface ghost filter skipped: " + ex.Message);
+                filteredClassRegions.Dispose();
+                HOperatorSet.CopyObj(classRegions, out filteredClassRegions, 1, -1);
+            }
+            finally
+            {
+                originalImage.Dispose();
+                grayImage.Dispose();
+                laplaceImage.Dispose();
+                originalDomain.Dispose();
+                allDefectsSeg.Dispose();
+                allDefectsOrig.Dispose();
+                classRegion.Dispose();
+                connectedRegions.Dispose();
+                currentRegion.Dispose();
+                keptComponents.Dispose();
+                filteredClassRegion.Dispose();
+                concatenatedRegions.Dispose();
+                numChannels.Dispose();
+                imageType.Dispose();
+                originalWidth.Dispose();
+                originalHeight.Dispose();
+                segmentationWidth.Dispose();
+                segmentationHeight.Dispose();
+                homMatIdentity.Dispose();
+                homMatScale.Dispose();
+                numConnected.Dispose();
+                numKept.Dispose();
+                targetArea.Dispose();
+            }
+        }
+
+        private bool KeepSurfaceDefectRegion(HObject regionSeg, HObject laplaceImage,
+            HObject originalDomain, HObject allDefectsOrig, HTuple homMatScale)
+        {
+            HObject regionOrigTemp = null, regionOrig = null;
+            HObject regionOuter = null, regionInner = null, backgroundRingTemp = null;
+            HObject backgroundRingWithoutDefects = null, backgroundRing = null;
+            HObject laplaceReduced = null, top1Region = null, top5Region = null;
+            HTuple areaOrig = new HTuple(), rowOrig = new HTuple(), colOrig = new HTuple();
+            HTuple backgroundArea = new HTuple(), backgroundRow = new HTuple(), backgroundCol = new HTuple();
+            HTuple lapMeanBg = new HTuple(), lapDevBg = new HTuple();
+            HTuple lapMinP99 = new HTuple(), lapP99 = new HTuple(), lapRangeP99 = new HTuple();
+            HTuple lapMinP95 = new HTuple(), lapP95 = new HTuple(), lapRangeP95 = new HTuple();
+            HTuple top1Area = new HTuple(), top1Row = new HTuple(), top1Col = new HTuple();
+            HTuple top5Area = new HTuple(), top5Row = new HTuple(), top5Col = new HTuple();
+            HTuple lapTop1Mean = new HTuple(), lapTop1Dev = new HTuple();
+            HTuple lapTop5Mean = new HTuple(), lapTop5Dev = new HTuple();
+
+            HOperatorSet.GenEmptyObj(out regionOrigTemp);
+            HOperatorSet.GenEmptyObj(out regionOrig);
+            HOperatorSet.GenEmptyObj(out regionOuter);
+            HOperatorSet.GenEmptyObj(out regionInner);
+            HOperatorSet.GenEmptyObj(out backgroundRingTemp);
+            HOperatorSet.GenEmptyObj(out backgroundRingWithoutDefects);
+            HOperatorSet.GenEmptyObj(out backgroundRing);
+            HOperatorSet.GenEmptyObj(out laplaceReduced);
+            HOperatorSet.GenEmptyObj(out top1Region);
+            HOperatorSet.GenEmptyObj(out top5Region);
+
+            try
+            {
+                regionOrigTemp.Dispose();
+                HOperatorSet.AffineTransRegion(regionSeg, out regionOrigTemp,
+                    homMatScale, "nearest_neighbor");
+                regionOrig.Dispose();
+                HOperatorSet.Intersection(regionOrigTemp, originalDomain, out regionOrig);
+                HOperatorSet.AreaCenter(regionOrig, out areaOrig, out rowOrig, out colOrig);
+                if (areaOrig.Length == 0 || areaOrig.D <= 0)
+                {
+                    return false;
+                }
+
+                regionOuter.Dispose();
+                HOperatorSet.DilationCircle(regionOrig, out regionOuter, SurfaceRingOuterRadius);
+                regionInner.Dispose();
+                HOperatorSet.DilationCircle(regionOrig, out regionInner, SurfaceRingInnerRadius);
+                backgroundRingTemp.Dispose();
+                HOperatorSet.Difference(regionOuter, regionInner, out backgroundRingTemp);
+                backgroundRingWithoutDefects.Dispose();
+                HOperatorSet.Difference(backgroundRingTemp, allDefectsOrig,
+                    out backgroundRingWithoutDefects);
+                backgroundRing.Dispose();
+                HOperatorSet.Intersection(backgroundRingWithoutDefects, originalDomain,
+                    out backgroundRing);
+                HOperatorSet.AreaCenter(backgroundRing, out backgroundArea,
+                    out backgroundRow, out backgroundCol);
+                if (backgroundArea.Length == 0 || backgroundArea.D < SurfaceMinBackgroundArea)
+                {
+                    return false;
+                }
+
+                HOperatorSet.Intensity(backgroundRing, laplaceImage, out lapMeanBg, out lapDevBg);
+                HOperatorSet.MinMaxGray(regionOrig, laplaceImage, 1,
+                    out lapMinP99, out lapP99, out lapRangeP99);
+                HOperatorSet.MinMaxGray(regionOrig, laplaceImage, 5,
+                    out lapMinP95, out lapP95, out lapRangeP95);
+
+                laplaceReduced.Dispose();
+                HOperatorSet.ReduceDomain(laplaceImage, regionOrig, out laplaceReduced);
+                top1Region.Dispose();
+                HOperatorSet.Threshold(laplaceReduced, out top1Region, lapP99, 999999);
+                HOperatorSet.AreaCenter(top1Region, out top1Area, out top1Row, out top1Col);
+                if (top1Area.Length > 0 && top1Area.D > 0)
+                {
+                    HOperatorSet.Intensity(top1Region, laplaceImage,
+                        out lapTop1Mean, out lapTop1Dev);
+                }
+                else
+                {
+                    lapTop1Mean.Dispose();
+                    lapTop1Mean = new HTuple(lapP99);
+                }
+
+                top5Region.Dispose();
+                HOperatorSet.Threshold(laplaceReduced, out top5Region, lapP95, 999999);
+                HOperatorSet.AreaCenter(top5Region, out top5Area, out top5Row, out top5Col);
+                if (top5Area.Length > 0 && top5Area.D > 0)
+                {
+                    HOperatorSet.Intensity(top5Region, laplaceImage,
+                        out lapTop5Mean, out lapTop5Dev);
+                }
+                else
+                {
+                    lapTop5Mean.Dispose();
+                    lapTop5Mean = new HTuple(lapP95);
+                }
+
+                double lapTop1RatioToBg = lapTop1Mean.D / Math.Max(lapMeanBg.D, 0.000001);
+                return lapTop1Mean.D >= SurfaceLapTop1MeanThreshold ||
+                    lapTop1RatioToBg >= SurfaceLapTop1RatioThreshold ||
+                    lapTop5Mean.D >= SurfaceLapTop5MeanThreshold;
+            }
+            catch (HalconException ex)
+            {
+                // Preserve a component if its feature calculation unexpectedly fails.
+                System.Diagnostics.Trace.WriteLine("Surface region kept after filter error: " + ex.Message);
+                return true;
+            }
+            finally
+            {
+                regionOrigTemp.Dispose();
+                regionOrig.Dispose();
+                regionOuter.Dispose();
+                regionInner.Dispose();
+                backgroundRingTemp.Dispose();
+                backgroundRingWithoutDefects.Dispose();
+                backgroundRing.Dispose();
+                laplaceReduced.Dispose();
+                top1Region.Dispose();
+                top5Region.Dispose();
+                areaOrig.Dispose();
+                rowOrig.Dispose();
+                colOrig.Dispose();
+                backgroundArea.Dispose();
+                backgroundRow.Dispose();
+                backgroundCol.Dispose();
+                lapMeanBg.Dispose();
+                lapDevBg.Dispose();
+                lapMinP99.Dispose();
+                lapP99.Dispose();
+                lapRangeP99.Dispose();
+                lapMinP95.Dispose();
+                lapP95.Dispose();
+                lapRangeP95.Dispose();
+                top1Area.Dispose();
+                top1Row.Dispose();
+                top1Col.Dispose();
+                top5Area.Dispose();
+                top5Row.Dispose();
+                top5Col.Dispose();
+                lapTop1Mean.Dispose();
+                lapTop1Dev.Dispose();
+                lapTop5Mean.Dispose();
+                lapTop5Dev.Dispose();
+            }
+        }
         // Procedures 
         // External procedures 
         // Chapter: Image / Channel
@@ -12042,7 +12118,7 @@ namespace IndustryDemo.Controllerui
                                 hv_BBoxLength2New = new HTuple();
                             hv_BBoxLength2New[hv_SwapIndices] = hv_Tmp;
                         }
-                        //Change angles such that they lie in the range (-180??, 180??].
+                        //Change angles such that they lie in the range (-180°, 180°].
                         hv_BBoxPhiNewIndices.Dispose();
                         using (HDevDisposeHelper dh = new HDevDisposeHelper())
                         {
@@ -12102,7 +12178,7 @@ namespace IndustryDemo.Controllerui
                 }
                 //
                 //Adapt the bounding box angles such that they are within the correct range,
-                //which is (-180??,180??] for 'ignore_direction'==false and (-90??,90??] else.
+                //which is (-180°,180°] for 'ignore_direction'==false and (-90°,90°] else.
                 hv_PhiThreshold.Dispose();
                 using (HDevDisposeHelper dh = new HDevDisposeHelper())
                 {
@@ -17412,13 +17488,13 @@ namespace IndustryDemo.Controllerui
         }
 
         // Main procedure 
-        public void ImageProcess1(string picDir, int s)    //picDir???·??
+        public void ImageProcess1(string picDir, int s)    //picDir为图片路径
         {
             HDevelopExport location = new HDevelopExport();
             if (Global.qrCode == "0004" && s == 2)
             {
                 var results = location.ProcessImage(picDir);
-                // ???results?е??
+                // 使用results中的值
                 a0 = results.Item1;
                 b0 = results.Item2;
                 a1 = results.Item3;
@@ -17451,7 +17527,7 @@ namespace IndustryDemo.Controllerui
 
             }
         }
-        public void ImageProcess(string picDir)    //picDir???·??
+        public void ImageProcess(string picDir)    //picDir为图片路径
         {
 
 
@@ -17468,16 +17544,16 @@ namespace IndustryDemo.Controllerui
 
         }
 
-        #region ???覴?????λ??
+        #region 识别瑕疵滤光片位置
         double[] getDefLoc(int cameraId, int row, int col, double defX, double defY)
         {
-            double YLoc = 0;    //???Y??λ??(?????覴?????????????????λ?mm)
-            double XLoc = 0;    //???X??λ??(?????覴?????????????????λ?mm)
+            double YLoc = 0;    //照片Y轴位置(计算此瑕疵在料盘上的坐标,单位为mm)
+            double XLoc = 0;    //照片X轴位置(计算此瑕疵在料盘上的坐标,单位为mm)
                                 //int defRow = 0;
                                 //int defCol = 0;
 
             string err;
-            //??????????pictureLocation??????????????????????????????????
+            //读取数据库中pictureLocation表，此表为每张照片的左上角在料盘上的坐标
             DataTable dt2 = MySqlHelper.GetDataTable(out err, "select * from pictureLocation where picName='" + cameraId + "-" + row + "-" + col + "'");
             //if (cameraId <= 4)
             //{
@@ -17560,23 +17636,23 @@ namespace IndustryDemo.Controllerui
 
             }
 
-            //?ж?覴?????????
+            //判断瑕疵是否在片内
             if (Global.optshape == "圆形")
             {
-                //??????????????????????
+                //计算料盘上两料孔之间的空隙
                 double dx = (((350 - Global.diameter - 0.2) / (Global.optLine - 1)) - Global.diameter - 0.2);
                 double dy = (((340 - Global.diameter - 0.2) / (Global.optRow - 1)) - Global.diameter - 0.2);
 
-                //????覴?????????????к???
+                //计算瑕疵所在料盘上的行和列
                 double defCol, defRow;
                 defCol = (int)Math.Floor(XLoc / (Global.diameter + 0.2 + dx));
                 defRow = (int)Math.Floor(YLoc / (Global.diameter + 0.2 + dy));
 
-                double x, y;    //???????,??????????????????????????
+                double x, y;    //圆心坐标,，即以料盘为坐标，料孔圆心的坐标
                 x = (Global.diameter / 2 + 0.1) + ((350 - Global.diameter - 0.2) / (Global.optLine - 1)) * defCol;
                 y = (Global.diameter / 2 + 0.1) + ((340 - Global.diameter - 0.2) / (Global.optRow - 1)) * defRow;
 
-                //????覴t???????(???????)????????
+                //计算瑕疵距料孔圆心(滤光片圆心)之间的距离
                 double defToCircleDis = Math.Sqrt((XLoc - x) * (XLoc - x) + (YLoc - y) * (YLoc - y));
 
                 if (defToCircleDis < ((Global.diameter * 0.92 / 2)))
@@ -17592,21 +17668,21 @@ namespace IndustryDemo.Controllerui
             }
             else if (Global.optshape == "方形")
             {
-                //??????????????????????
+                //计算料盘上两料孔之间的空隙
                 double dx = (((350 - Global.length - 0.2) / (Global.optLine - 1)) - Global.length - 0.2);
                 double dy = (((340 - Global.width - 0.2) / (Global.optRow - 1)) - Global.width - 0.2);
-                //????覴?????????????к???
+                //计算瑕疵所在料盘上的行和列
                 double defCol, defRow;
                 defCol = (int)Math.Floor(XLoc / (Global.length + 0.2 + dx));
                 defRow = (int)Math.Floor(YLoc / (Global.width + 0.2 + dy));
 
-                double x, y;    //?????????
+                double x, y;    //中心点坐标
                 x = (Global.length / 2 + 0.1) + ((350 - Global.length - 0.2) / (Global.optLine - 1)) * defCol;
                 y = (Global.width / 2 + 0.1) + ((340 - Global.width - 0.2) / (Global.optRow - 1)) * defRow;
 
                 //if (XLoc >= (x - ((Global.length * 0.9) / 2)) && XLoc <= (x + ((Global.length * 0.9) / 2)) && YLoc >= (y - ((Global.width * 0.9) / 2)) && YLoc <= (y + ((Global.width * 0.9) / 2)))
-                //?ж?覴??????????????????Χ??
-                if (XLoc >= (x - ((Global.length - 1) / 2)) && XLoc <= (x + ((Global.length - 1) / 2)) && YLoc >= (y - ((Global.width - 1) / 2)) && YLoc <= (y + ((Global.width - 1) / 2)))     //????1???0.4
+                //判断瑕疵是否在滤光片上的指定范围内
+                if (XLoc >= (x - ((Global.length - 1) / 2)) && XLoc <= (x + ((Global.length - 1) / 2)) && YLoc >= (y - ((Global.width - 1) / 2)) && YLoc <= (y + ((Global.width - 1) / 2)))     //原来为1改为0.4
                 {
                     double[] res = { XLoc, YLoc, defCol, defRow };
                     return res;
@@ -17632,9 +17708,6 @@ namespace IndustryDemo.Controllerui
             MySqlCommand comm = new MySqlCommand();
             comm.Connection = conn;
             string Query3 = "";
-            List<ImageDetectionDbRecord> cameraBatchResults = new List<ImageDetectionDbRecord>();
-            DateTime dlStepStart;
-            System.Diagnostics.Stopwatch dlStepStopwatch;
 
             // Local iconic variables 
 
@@ -17745,12 +17818,12 @@ namespace IndustryDemo.Controllerui
                 //
                 //Directory name with the images to be segmented.
                 hv_ImageDir.Dispose();
-                //hv_ImageDir = "E:/??????????????0004";
+                //hv_ImageDir = "E:/拟合代码/圆拟合图片/0004";
                 //
                 //Example data folder containing the outputs of the previous example series.
                 hv_ExampleDataDir.Dispose();
-                //hv_ExampleDataDir = "E:/??????";
-                hv_ExampleDataDir = "C:/Users/Administrator/Desktop/我的上位机程??3.3) - 定位划痕统计时间??.0)/model/V12";
+                //hv_ExampleDataDir = "E:/模型调试";
+                hv_ExampleDataDir = "E:/li/我的上位机程序(3.3) - 定位划痕/model/V12";
                 //
                 //Load the trained or pretrained model for defects detection
                 //
@@ -17772,19 +17845,19 @@ namespace IndustryDemo.Controllerui
                 hv_ClassNames.Dispose();
                 hv_ClassNames = new HTuple();
                 hv_ClassNames[0] = "";
-                hv_ClassNames[1] = "\u5212\u75d5";
-                hv_ClassNames[2] = "\u5185\u5e03\u6bdb";
-                hv_ClassNames[3] = "\u6c34\u5370";
-                hv_ClassNames[4] = "\u5185\u70b9\u5b50";
-                hv_ClassNames[5] = "\u5d29\u8fb9";
-                hv_ClassNames[6] = "\u8150\u8680\u5370";
-                hv_ClassNames[7] = "\u70b9\u5b50";
-                hv_ClassNames[8] = "\u624b\u5370";
-                hv_ClassNames[9] = "\u9ebb\u70b9";
-                hv_ClassNames[10] = "\u5916\u5e03\u6bdb";
-                hv_ClassNames[11] = "\u8fb9\u7f18";
+                hv_ClassNames[1] = "划痕";
+                hv_ClassNames[2] = "内布毛";
+                hv_ClassNames[3] = "水印";
+                hv_ClassNames[4] = "内点子";
+                hv_ClassNames[5] = "崩边";
+                hv_ClassNames[6] = "腐蚀印";
+                hv_ClassNames[7] = "点子";
+                hv_ClassNames[8] = "手印";
+                hv_ClassNames[9] = "麻点";
+                hv_ClassNames[10] = "外布毛";
+                hv_ClassNames[11] = "边缘";
                 //hv_ClassNames[12] = "水印";
-                //hv_ClassNames[13] = "内点??;
+                //hv_ClassNames[13] = "内点子";
 
                 int[] level = { 0, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2 };
                 //Class IDs.
@@ -17836,29 +17909,26 @@ namespace IndustryDemo.Controllerui
                     }
                 }
                 //
-                dlStepStart = StartDLStep(out dlStepStopwatch);
+                //Check if all necessary files exist.
                 check_model_availability(hv_ExampleDataDir, hv_PreprocessParamFileName, hv_RetrainedModelFileName,
                     hv_UsePretrainedModel);
-                FinishDLStep(BuildDLTimingName(picDir, "01_model_file_check"), dlStepStart, dlStepStopwatch);
                 //
-                dlStepStart = StartDLStep(out dlStepStopwatch);
+                //Read in the retrained model.
                 hv_DLModelHandle.Dispose();
                 HOperatorSet.ReadDlModel(hv_RetrainedModelFileName, out hv_DLModelHandle);
-                FinishDLStep(BuildDLTimingName(picDir, "02_read_dl_model"), dlStepStart, dlStepStopwatch);
-                dlStepStart = StartDLStep(out dlStepStopwatch);
+                //Set the batch size.
                 HOperatorSet.SetDlModelParam(hv_DLModelHandle, "batch_size", hv_BatchSizeInference);
+                //Initialize the model for inference.
                 if ((int)(hv_UseGPU.TupleNot()) != 0)
                 {
                     HOperatorSet.SetDlModelParam(hv_DLModelHandle, "runtime", "cpu");
                 }
                 HOperatorSet.SetDlModelParam(hv_DLModelHandle, "runtime_init", "immediately");
-                FinishDLStep(BuildDLTimingName(picDir, "03_runtime_init"), dlStepStart, dlStepStopwatch);
                 //
-                dlStepStart = StartDLStep(out dlStepStopwatch);
+                //Get the parameters used for preprocessing.
                 hv_DLPreprocessParam.Dispose();
                 HOperatorSet.ReadDict(hv_PreprocessParamFileName, new HTuple(), new HTuple(),
                     out hv_DLPreprocessParam);
-                FinishDLStep(BuildDLTimingName(picDir, "04_read_preprocess_param"), dlStepStart, dlStepStopwatch);
                 //
                 //Set parameters for visualization of results.
                 hv_WindowHandleDict.Dispose();
@@ -17871,11 +17941,8 @@ namespace IndustryDemo.Controllerui
                 //List the files, the model should be applied to (e.g. using list_image_files).
                 //For this example, we select some images manually.
 
-                dlStepStart = StartDLStep(out dlStepStopwatch);
                 hv_ImageFiles.Dispose();
                 list_image_files(picDir, "default", new HTuple(), out hv_ImageFiles);
-                FinishDLStep(BuildDLTimingName(picDir, "05_list_image_files"), dlStepStart, dlStepStopwatch);
-                AddDLTimingPoint(BuildDLTimingName(picDir, "05b_image_file_count count=" + hv_ImageFiles.TupleLength().ToString()));
                 //
                 //Loop over all images in batches of size BatchSizeInference for inference.
                 HTuple end_val79 = ((((new HTuple(hv_ImageFiles.TupleLength()
@@ -17893,7 +17960,7 @@ namespace IndustryDemo.Controllerui
                     }
                     //Read the images of the batch.
 
-                    //*????????
+                    //*读取文件名
                     using (HDevDisposeHelper dh = new HDevDisposeHelper())
                     {
                         hv_BaseName.Dispose(); hv_Extension.Dispose(); hv_Directory.Dispose();
@@ -17901,14 +17968,10 @@ namespace IndustryDemo.Controllerui
                             out hv_Extension, out hv_Directory);
                     }
 
-                    dlStepStart = StartDLStep(out dlStepStopwatch);
                     ho_ImageBatch.Dispose();
                     HOperatorSet.ReadImage(out ho_ImageBatch, hv_Batch);
-                    FinishDLStep(BuildDLTimingName(picDir, "06_read_image"), dlStepStart, dlStepStopwatch);
 
-                    dlStepStart = StartDLStep(out dlStepStopwatch);
-
-                    //??????????
+                    //提取边缘圆心半径
                     ho_ImageBatch.Dispose();
                     HOperatorSet.ReadImage(out ho_ImageBatch, hv_Batch);
                     hv_Mean.Dispose(); hv_Deviation.Dispose();
@@ -17969,25 +18032,18 @@ namespace IndustryDemo.Controllerui
                             hv_Deviation = 10;
                         }
                     }
-                    FinishDLStep(BuildDLTimingName(picDir, "07_geometry_preprocess"), dlStepStart, dlStepStopwatch);
                     //
                     //Generate the DLSampleBatch.
-                    dlStepStart = StartDLStep(out dlStepStopwatch);
                     hv_DLSampleBatch.Dispose();
                     gen_dl_samples_from_images(ho_ImageBatch, out hv_DLSampleBatch);
-                    FinishDLStep(BuildDLTimingName(picDir, "08_gen_dlsample"), dlStepStart, dlStepStopwatch);
                     //
                     //Preprocess the DLSampleBatch.
-                    dlStepStart = StartDLStep(out dlStepStopwatch);
                     preprocess_dl_samples(hv_DLSampleBatch, hv_DLPreprocessParam);
-                    FinishDLStep(BuildDLTimingName(picDir, "09_preprocess_dlsample"), dlStepStart, dlStepStopwatch);
                     //
                     //Apply the DL model on the DLSampleBatch.
-                    dlStepStart = StartDLStep(out dlStepStopwatch);
                     hv_DLResultBatch.Dispose();
                     HOperatorSet.ApplyDlModel(hv_DLModelHandle, hv_DLSampleBatch, (new HTuple("segmentation_image")).TupleConcat(
                         "segmentation_confidence"), out hv_DLResultBatch);
-                    FinishDLStep(BuildDLTimingName(picDir, "10_apply_dl_model"), dlStepStart, dlStepStopwatch);
                     //
                     //Postprocessing and visualization.
                     //Loop over each sample in the batch.
@@ -17995,7 +18051,6 @@ namespace IndustryDemo.Controllerui
                     HTuple step_val134 = 1;
                     for (hv_SampleIndex = 0; hv_SampleIndex.Continue(end_val134, step_val134); hv_SampleIndex = hv_SampleIndex.TupleAdd(step_val134))
                     {
-                        dlStepStart = StartDLStep(out dlStepStopwatch);
                         //
                         //Get image.
                         using (HDevDisposeHelper dh = new HDevDisposeHelper())
@@ -18016,11 +18071,15 @@ namespace IndustryDemo.Controllerui
                         ho_ClassRegions.Dispose();
                         HOperatorSet.Threshold(ho_SegmentationImage, out ho_ClassRegions, hv_ClassIDs,
                             hv_ClassIDs);
+                        HObject filteredSurfaceClassRegions;
+                        FilterSurfaceGhostRegions(ho_ImageBatch, hv_SampleIndex, ho_SegmentationImage,
+                            ho_ClassRegions, hv_ClassIDs, out filteredSurfaceClassRegions);
+                        ho_ClassRegions.Dispose();
+                        ho_ClassRegions = filteredSurfaceClassRegions;
                         //
                         //Get area of class regions.
                         hv_Areas.Dispose();
                         HOperatorSet.RegionFeatures(ho_ClassRegions, "area", out hv_Areas);
-                        FinishDLStep(BuildDLTimingName(picDir, "11_segmentation_region_calc"), dlStepStart, dlStepStopwatch);
                         //
                         //Here, we do not display the first class, since it is the class 'good'
                         //and we only want to display the defect regions.
@@ -18029,12 +18088,7 @@ namespace IndustryDemo.Controllerui
                         hv_ROW = new HTuple();
                         hv_COL.Dispose();
                         hv_COL = new HTuple();
-                            dlStepStart = StartDLStep(out dlStepStopwatch);
-                            Query3 = "";
-                        long postprocessGetDefLocElapsed = 0;
-                        long postprocessSqlAppendElapsed = 0;
-                        int postprocessGetDefLocCount = 0;
-                        int postprocessSqlAppendCount = 0;
+                        Query3 = "";
                         for (hv_ClassIndex = 1; (int)hv_ClassIndex <= (int)((new HTuple(hv_Areas.TupleLength()
                             )) - 1); hv_ClassIndex = (int)hv_ClassIndex + 1)
                         {
@@ -18052,8 +18106,8 @@ namespace IndustryDemo.Controllerui
                                 //hv_Area.Dispose(); hv_Row.Dispose(); hv_Column.Dispose();
                                 //HOperatorSet.AreaCenter(ho_ConnectedRegions, out hv_Area, out hv_Row,
                                 //    out hv_Column);
-                                #region ????????????????????????
-                                //???????????????????磬???????????
+                                #region 这里是计算划痕、亮点、内点子的尺寸
+                                //计算划痕、亮点和内点子的尺寸，其他执行默认
                                 switch (hv_ClassIndex.I)
                                 {
                                     case 1:
@@ -18063,7 +18117,7 @@ namespace IndustryDemo.Controllerui
                                         hv_Area.Dispose(); hv_Row.Dispose(); hv_Column.Dispose();
                                         HOperatorSet.AreaCenter(ho_ConnectedRegions, out hv_Area, out hv_Row,
                                             out hv_Column);
-                                        //?????????????????????????????????????12*512????
+                                        //计算区域边界最大距离，此处为划痕长度计算使用的是512*512坐标
                                         hv_Row11.Dispose(); hv_Column11.Dispose(); hv_Row21.Dispose(); hv_Column21.Dispose(); hv_Diameter.Dispose();
                                         HOperatorSet.DiameterRegion(ho_ConnectedRegions, out hv_Row11, out hv_Column11,
                                             out hv_Row21, out hv_Column21, out hv_Diameter);
@@ -18131,7 +18185,7 @@ namespace IndustryDemo.Controllerui
                                                     hv_Column = ExpTmpLocalVar_Column;
                                                 }
                                             }
-                                            //???????????
+                                            //计算外接圆半径
                                             hv_Row3.Dispose(); hv_Column3.Dispose(); hv_Radius3.Dispose();
                                             HOperatorSet.SmallestCircle(ho_SelectedRegions, out hv_Row3, out hv_Column3,
                                                 out hv_Radius3);
@@ -18212,7 +18266,7 @@ namespace IndustryDemo.Controllerui
                                                     hv_Column = ExpTmpLocalVar_Column;
                                                 }
                                             }
-                                            //???????????
+                                            //计算外接圆半径
                                             hv_Row3.Dispose(); hv_Column3.Dispose(); hv_Radius3.Dispose();
                                             HOperatorSet.SmallestCircle(ho_SelectedRegions, out hv_Row3, out hv_Column3,
                                                 out hv_Radius3);
@@ -18274,7 +18328,7 @@ namespace IndustryDemo.Controllerui
                                                     hv_Column = ExpTmpLocalVar_Column;
                                                 }
                                             }
-                                            //???????????
+                                            //计算外接圆半径
                                             hv_Row3.Dispose(); hv_Column3.Dispose(); hv_Radius3.Dispose();
                                             HOperatorSet.SmallestCircle(ho_SelectedRegions, out hv_Row3, out hv_Column3,
                                                 out hv_Radius3);
@@ -18321,11 +18375,11 @@ namespace IndustryDemo.Controllerui
                                 {
 
                                     bool circleflag = true;
-                                    //????????б????
+                                    //若图片是含有边缘的
                                     if ((int)(new HTuple(hv_Deviation.TupleGreater(35))) != 0)
                                     {
                                         hv_CirDistanceSet = new HTuple();
-                                        //??512*512????????覴????????????????????
+                                        //将512*512分割结果上的瑕疵坐标还原为原图上的像素坐标
                                         hv_zRow.Dispose();
                                         using (HDevDisposeHelper dh = new HDevDisposeHelper())
                                         {
@@ -18341,7 +18395,7 @@ namespace IndustryDemo.Controllerui
                                         for (hv_DIndex = 0; (int)hv_DIndex <= (int)((new HTuple(hv_Area2.TupleLength()
                                             )) - 1); hv_DIndex = (int)hv_DIndex + 1)
                                         {
-                                            //????覴?λ?t????????????????????????????????????
+                                            //计算瑕疵位置距滤光片圆心（质点）的距离，使用的是原图上的像素坐标
                                             using (HDevDisposeHelper dh = new HDevDisposeHelper())
                                             {
                                                 hv_Distance.Dispose();
@@ -18354,7 +18408,7 @@ namespace IndustryDemo.Controllerui
                                         HOperatorSet.TupleMin(hv_CirDistanceSet, out hv_CirDistanceSetMin);
 
                                         HTuple selectedValues = Global.diameter / 0.012;
-                                        //???覴????????????Χ?????覴?????д????????
+                                        //如果瑕疵在指定滤光片范围内，则将瑕疵数据写入数据库
                                         if ((int)(new HTuple(((selectedValues * 0.95)).TupleGreater(hv_CirDistanceSetMin))) != 0)
                                         {
                                             if (circleflag)
@@ -18363,10 +18417,10 @@ namespace IndustryDemo.Controllerui
                                                 {
                                                     break;
                                                 }
-                                                //????
+                                                //划痕
                                                 if ((int)(new HTuple(hv_ClassIndex.TupleEqual(1))) != 0)
                                                 {
-                                                    #region ????????????????????????
+                                                    #region 这里是把新检测的数据给存入进去
                                                     double picx, picy, trayx, trayy;
                                                     int trayxnum, trayynum;
                                                     zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18379,7 +18433,7 @@ namespace IndustryDemo.Controllerui
                                                     cameraId = Convert.ToInt32(split[0]);
                                                     row = Convert.ToInt32(split[1]);
                                                     line = Convert.ToInt32(split[2]);
-                                                    double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                    double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                     if (xy[0] > 0)
                                                     {
                                                         trayx = Math.Round(xy[0], 2);
@@ -18391,21 +18445,21 @@ namespace IndustryDemo.Controllerui
                                                         {
                                                             //MessageBox.Show(trayxnum + "," + trayynum);
                                                             //conn.Open();
-                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,scratchLength) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Diameter[hv_ConnectIndex] * 0.006 * Global.photoRadio + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,scratchLength) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Diameter[hv_ConnectIndex] * 0.006 * Global.photoRadio + "');";
                                                             //cmd2 = new MySqlCommand(Query3, conn);
                                                             //cmd2.ExecuteNonQuery();
                                                             //conn.Close();
-                                                            ////????????????
+                                                            ////查询照片检测情况
                                                             circleflag = false;
                                                         }
                                                     }
-                                                    #endregion  ???????????
+                                                    #endregion  新增数据结束
                                                 }
-                                                //????
+                                                //点子
                                                 else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(7))) != 0)
                                                 {
 
-                                                    #region ????????????????????????
+                                                    #region 这里是把新检测的数据给存入进去
                                                     double picx, picy, trayx, trayy;
                                                     int trayxnum, trayynum;
                                                     zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18418,7 +18472,7 @@ namespace IndustryDemo.Controllerui
                                                     cameraId = Convert.ToInt32(split[0]);
                                                     row = Convert.ToInt32(split[1]);
                                                     line = Convert.ToInt32(split[2]);
-                                                    double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                    double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                     if (xy[0] > 0)
                                                     {
                                                         trayx = Math.Round(xy[0], 2);
@@ -18432,27 +18486,27 @@ namespace IndustryDemo.Controllerui
                                                         {
                                                             if ((int)(new HTuple(((hv_Tuple1.TupleSelect(hv_ConnectIndex))).TupleGreater(135.00))) != 0)
                                                             {
-                                                                Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                                Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');";
                                                             }
                                                             else
                                                             {
                                                                 //MessageBox.Show(trayxnum + "," + trayynum);
                                                                 //conn.Open();
-                                                                Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                                Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');";
                                                                 //cmd2 = new MySqlCommand(Query3, conn);
                                                                 //cmd2.ExecuteNonQuery();
                                                                 //conn.Close();
-                                                                ////????????????
+                                                                ////查询照片检测情况
                                                             }
                                                             circleflag = false;
                                                         }
                                                     }
-                                                    #endregion  ???????????
+                                                    #endregion  新增数据结束
                                                 }
-                                                //????????д???????
+                                                //内点子信息写入数据库
                                                 else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(4))) != 0)
                                                 {
-                                                    #region ????????????????????????
+                                                    #region 这里是把新检测的数据给存入进去
                                                     double picx, picy, trayx, trayy;
                                                     int trayxnum, trayynum;
                                                     zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18465,7 +18519,7 @@ namespace IndustryDemo.Controllerui
                                                     cameraId = Convert.ToInt32(split[0]);
                                                     row = Convert.ToInt32(split[1]);
                                                     line = Convert.ToInt32(split[2]);
-                                                    double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                    double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                     if (xy[0] > 0)
                                                     {
                                                         trayx = Math.Round(xy[0], 2);
@@ -18478,26 +18532,26 @@ namespace IndustryDemo.Controllerui
                                                             {
                                                                 //MessageBox.Show(trayxnum + "," + trayynum);
                                                                 //conn.Open();
-                                                                Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                                Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');";
                                                             }
                                                             else
                                                             {
                                                                 //cmd2 = new MySqlCommand(Query3, conn);
                                                                 //cmd2.ExecuteNonQuery();
                                                                 //conn.Close();
-                                                                ////????????????
-                                                                Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[0] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                                ////查询照片检测情况
+                                                                Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[0] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');";
                                                             }
                                                             circleflag = false;
                                                         }
                                                     }
-                                                    #endregion  ???????????
+                                                    #endregion  新增数据结束
                                                 }
 
-                                                //???
+                                                //手印
                                                 else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(8))) != 0)
                                                 {
-                                                    #region ????????????????????????
+                                                    #region 这里是把新检测的数据给存入进去
                                                     double picx, picy, trayx, trayy;
                                                     int trayxnum, trayynum;
                                                     zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18510,7 +18564,7 @@ namespace IndustryDemo.Controllerui
                                                     cameraId = Convert.ToInt32(split[0]);
                                                     row = Convert.ToInt32(split[1]);
                                                     line = Convert.ToInt32(split[2]);
-                                                    double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                    double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                     if (xy[0] > 0)
                                                     {
                                                         trayx = Math.Round(xy[0], 2);
@@ -18521,21 +18575,21 @@ namespace IndustryDemo.Controllerui
                                                         {
                                                             //MessageBox.Show(trayxnum + "," + trayynum);
                                                             //conn.Open();
-                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');";
                                                             //cmd2 = new MySqlCommand(Query3, conn);
                                                             //cmd2.ExecuteNonQuery();
                                                             //conn.Close();
-                                                            ////????????????
+                                                            ////查询照片检测情况
                                                             circleflag = false;
                                                         }
                                                     }
-                                                    #endregion  ???????????
+                                                    #endregion  新增数据结束
                                                 }
 
-                                                //????=>?????
+                                                //麻点==>内点子
                                                 else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(9))) != 0)
                                                 {
-                                                    #region ????????????????????????
+                                                    #region 这里是把新检测的数据给存入进去
                                                     double picx, picy, trayx, trayy;
                                                     int trayxnum, trayynum;
                                                     zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18548,7 +18602,7 @@ namespace IndustryDemo.Controllerui
                                                     cameraId = Convert.ToInt32(split[0]);
                                                     row = Convert.ToInt32(split[1]);
                                                     line = Convert.ToInt32(split[2]);
-                                                    double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                    double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                     if (xy[0] > 0)
                                                     {
                                                         trayx = Math.Round(xy[0], 2);
@@ -18559,20 +18613,20 @@ namespace IndustryDemo.Controllerui
                                                         {
                                                             //MessageBox.Show(trayxnum + "," + trayynum);
                                                             //conn.Open();
-                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');";
                                                             //cmd2 = new MySqlCommand(Query3, conn);
                                                             //cmd2.ExecuteNonQuery();
                                                             //conn.Close();
-                                                            ////????????????
+                                                            ////查询照片检测情况
                                                             circleflag = false;
                                                         }
                                                     }
-                                                    #endregion  ???????????
+                                                    #endregion  新增数据结束
                                                 }
-                                                //????
+                                                //腐蚀印
                                                 else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(6))) != 0)
                                                 {
-                                                    #region ????????????????????????
+                                                    #region 这里是把新检测的数据给存入进去
                                                     double picx, picy, trayx, trayy;
                                                     int trayxnum, trayynum;
                                                     zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18585,7 +18639,7 @@ namespace IndustryDemo.Controllerui
                                                     cameraId = Convert.ToInt32(split[0]);
                                                     row = Convert.ToInt32(split[1]);
                                                     line = Convert.ToInt32(split[2]);
-                                                    double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                    double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                     if (xy[0] > 0)
                                                     {
                                                         trayx = Math.Round(xy[0], 2);
@@ -18599,20 +18653,20 @@ namespace IndustryDemo.Controllerui
                                                         {
                                                             //MessageBox.Show(trayxnum + "," + trayynum);
                                                             //conn.Open();
-                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');";
                                                             //cmd2 = new MySqlCommand(Query3, conn);
                                                             //cmd2.ExecuteNonQuery();
                                                             //conn.Close();
-                                                            ////????????????
+                                                            ////查询照片检测情况
                                                             circleflag = false;
                                                         }
                                                     }
-                                                    #endregion  ???????????
+                                                    #endregion  新增数据结束
                                                 }
-                                                //????
+                                                //内布毛
                                                 else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(2))) != 0)
                                                 {
-                                                    #region ????????????????????????
+                                                    #region 这里是把新检测的数据给存入进去
                                                     double picx, picy, trayx, trayy;
                                                     int trayxnum, trayynum;
                                                     zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18625,7 +18679,7 @@ namespace IndustryDemo.Controllerui
                                                     cameraId = Convert.ToInt32(split[0]);
                                                     row = Convert.ToInt32(split[1]);
                                                     line = Convert.ToInt32(split[2]);
-                                                    double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                    double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                     if (xy[0] > 0)
                                                     {
                                                         trayx = Math.Round(xy[0], 2);
@@ -18636,19 +18690,19 @@ namespace IndustryDemo.Controllerui
                                                         {
                                                             //MessageBox.Show(trayxnum + "," + trayynum);
                                                             //conn.Open();
-                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');";
                                                             //cmd2 = new MySqlCommand(Query3, conn);
                                                             //cmd2.ExecuteNonQuery();
                                                             //conn.Close();
-                                                            ////????????????
+                                                            ////查询照片检测情况
                                                             circleflag = false;
                                                         }
                                                     }
-                                                    #endregion  ???????????
+                                                    #endregion  新增数据结束
                                                 }
                                                 else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(0))) == 0)
                                                 {
-                                                    #region ????????????????????????
+                                                    #region 这里是把新检测的数据给存入进去
                                                     double picx, picy, trayx, trayy;
                                                     int trayxnum, trayynum;
                                                     zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18661,7 +18715,7 @@ namespace IndustryDemo.Controllerui
                                                     cameraId = Convert.ToInt32(split[0]);
                                                     row = Convert.ToInt32(split[1]);
                                                     line = Convert.ToInt32(split[2]);
-                                                    double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                    double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                     if (xy[0] > 0)
                                                     {
                                                         trayx = Math.Round(xy[0], 2);
@@ -18672,32 +18726,32 @@ namespace IndustryDemo.Controllerui
                                                         {
                                                             //MessageBox.Show(trayxnum + "," + trayynum);
                                                             //conn.Open();
-                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "');";
                                                             //cmd2 = new MySqlCommand(Query3, conn);
                                                             //cmd2.ExecuteNonQuery();
                                                             //conn.Close();
-                                                            ////????????????
+                                                            ////查询照片检测情况
                                                             circleflag = false;
                                                         }
                                                     }
-                                                    #endregion  ???????????
+                                                    #endregion  新增数据结束
                                                 }
                                             }
                                         }
                                     }
                                     else
                                     {
-                                        //д???????
+                                        //写入数据库
                                         if (circleflag)
                                         {
                                             if ((int)(new HTuple(hv_ClassIndex.TupleEqual(11))) != 0)
                                             {
                                                 break;
                                             }
-                                            //????
+                                            //划痕
                                             if ((int)(new HTuple(hv_ClassIndex.TupleEqual(1))) != 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18710,7 +18764,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -18724,20 +18778,20 @@ namespace IndustryDemo.Controllerui
                                                     {
                                                         //MessageBox.Show(trayxnum + "," + trayynum);
                                                         //conn.Open();
-                                                        Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,scratchLength) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Diameter[hv_ConnectIndex] * 0.006 * Global.photoRadio + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                        Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,scratchLength) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Diameter[hv_ConnectIndex] * 0.006 * Global.photoRadio + "');";
                                                         //cmd2 = new MySqlCommand(Query3, conn);
                                                         //cmd2.ExecuteNonQuery();
                                                         //conn.Close();
-                                                        ////????????????
+                                                        ////查询照片检测情况
                                                         circleflag = false;
                                                     }
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
-                                            //????
+                                            //点子
                                             else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(7))) != 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18750,7 +18804,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -18762,28 +18816,28 @@ namespace IndustryDemo.Controllerui
                                                     {
                                                         if ((int)(new HTuple(((hv_Tuple1.TupleSelect(hv_ConnectIndex))).TupleGreater(135.00))) != 0)
                                                         {
-                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');";
                                                         }
                                                         else
                                                         {
                                                             //MessageBox.Show(trayxnum + "," + trayynum);
                                                             //conn.Open();
-                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');";
                                                             //cmd2 = new MySqlCommand(Query3, conn);
                                                             //cmd2.ExecuteNonQuery();
                                                             //conn.Close();
-                                                            ////????????????
+                                                            ////查询照片检测情况
                                                         }
                                                         circleflag = false;
                                                     }
 
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
-                                            //????????д???????
+                                            //内点子信息写入数据库
                                             else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(4))) != 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18796,7 +18850,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -18812,25 +18866,25 @@ namespace IndustryDemo.Controllerui
                                                         {
                                                             //MessageBox.Show(trayxnum + "," + trayynum);
                                                             //conn.Open();
-                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');";
                                                         }
                                                         else
                                                         {
                                                             //cmd2 = new MySqlCommand(Query3, conn);
                                                             //cmd2.ExecuteNonQuery();
                                                             //conn.Close();
-                                                            ////????????????
-                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[0] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                            ////查询照片检测情况
+                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[0] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');";
                                                         }
                                                         circleflag = false;
                                                     }
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
-                                            //???
+                                            //手印
                                             else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(8))) != 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18843,7 +18897,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -18852,17 +18906,17 @@ namespace IndustryDemo.Controllerui
                                                     trayynum = Global.optLine - (int)xy[2] - 1;
                                                     if (hv_Area.TupleSelect(hv_ConnectIndex) >= 250 && trayx > 0 && trayy > 0 && trayy < 340 && trayx < 350 && trayxnum >= 0 && trayxnum < Global.optRow && trayynum >= 0 && trayynum < Global.optLine && hv_ClassIndex != 0)
                                                     {
-                                                        Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
-                                                        //????????????
+                                                        Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');";
+                                                        //查询照片检测情况
                                                         circleflag = false;
                                                     }
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
-                                            //????=>?????
+                                            //麻点==>内点子
                                             else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(9))) != 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18875,7 +18929,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -18886,20 +18940,20 @@ namespace IndustryDemo.Controllerui
                                                     {
                                                         //MessageBox.Show(trayxnum + "," + trayynum);
                                                         //conn.Open();
-                                                        Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                        Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "');";
                                                         //cmd2 = new MySqlCommand(Query3, conn);
                                                         //cmd2.ExecuteNonQuery();
                                                         //conn.Close();
-                                                        ////????????????
+                                                        ////查询照片检测情况
                                                         circleflag = false;
                                                     }
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
-                                            //????
+                                            //腐蚀印
                                             else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(6))) != 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18912,7 +18966,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -18925,20 +18979,20 @@ namespace IndustryDemo.Controllerui
                                                     {
                                                         //MessageBox.Show(trayxnum + "," + trayynum);
                                                         //conn.Open();
-                                                        Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                        Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');";
                                                         //cmd2 = new MySqlCommand(Query3, conn);
                                                         //cmd2.ExecuteNonQuery();
                                                         //conn.Close();
-                                                        ////????????????
+                                                        ////查询照片检测情况
                                                         circleflag = false;
                                                     }
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
-                                            //????
+                                            //内布毛
                                             else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(2))) != 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18951,7 +19005,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -18962,19 +19016,19 @@ namespace IndustryDemo.Controllerui
                                                     {
                                                         //MessageBox.Show(trayxnum + "," + trayynum);
                                                         //conn.Open();
-                                                        Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                        Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');";
                                                         //cmd2 = new MySqlCommand(Query3, conn);
                                                         //cmd2.ExecuteNonQuery();
                                                         //conn.Close();
-                                                        ////????????????
+                                                        ////查询照片检测情况
                                                         circleflag = false;
                                                     }
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
                                             else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(0))) == 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -18987,7 +19041,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -19001,41 +19055,55 @@ namespace IndustryDemo.Controllerui
                                                     {
                                                         //MessageBox.Show(trayxnum + "," + trayynum);
                                                         //conn.Open();
-                                                        Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                        Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "');";
                                                         //cmd2 = new MySqlCommand(Query3, conn);
                                                         //cmd2.ExecuteNonQuery();
                                                         //conn.Close();
-                                                        ////????????????
+                                                        ////查询照片检测情况
                                                         circleflag = false;
                                                     }
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
                                         }
                                     }
                                 }
                             }
                         }
-                        #region ?????????????????????????????????????????????
-                        long postprocessTotalElapsed = dlStepStopwatch.ElapsedMilliseconds;
-                        FinishDLStep(BuildDLTimingName(picDir, "12_rule_postprocess_13_sql_build"), dlStepStart, dlStepStopwatch);
-                        AddDLTimingDuration(BuildDLTimingName(picDir, "12a_get_def_loc"), postprocessGetDefLocElapsed);
-                        AddDLTimingPoint(BuildDLTimingName(picDir, "12a_get_def_loc_count count=" + postprocessGetDefLocCount.ToString()));
-                        AddDLTimingDuration(BuildDLTimingName(picDir, "12b_sql_string_append"), postprocessSqlAppendElapsed);
-                        AddDLTimingPoint(BuildDLTimingName(picDir, "12b_sql_string_append_count count=" + postprocessSqlAppendCount.ToString()));
-                        AddDLTimingDuration(BuildDLTimingName(picDir, "12c_rule_other_calc"), postprocessTotalElapsed - postprocessGetDefLocElapsed - postprocessSqlAppendElapsed);
-                        AddDLTimingPoint(BuildDLTimingName(picDir, "13_query3_status query_empty=" + (Query3 == "").ToString() + " query_chars=" + Query3.Length.ToString()));
-                        dlStepStart = StartDLStep(out dlStepStopwatch);
-                        AddImageDetectionResult(cameraBatchResults, Query3, hv_BaseName.ToString(), picDir);
-                        FinishDLStep(BuildDLTimingName(picDir, "14_database_queue"), dlStepStart, dlStepStopwatch);
-                        #endregion   ?????????
+                        #region 照片的检测情况管理，存在则加一，不存在则新增一条记录
+                        string Query2 = "";
+                        conn.Open();
+                        comm.Connection = conn;
+                        comm.CommandText = "select count(picStatus) from picture WHERE qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "' and picName='" + hv_BaseName + "'";     //拼接sql语句
+                        MySqlDataReader trayTableReader;
+                        trayTableReader = comm.ExecuteReader();
+                        trayTableReader.Read();
+                        int status = Convert.ToInt32(trayTableReader.GetValue(0));
+                        conn.Close();
+                        //查询照片检测情况
+                        if (Query3 != "")
+                        {
+                            conn.Open();
+                            comm.CommandText = Query3;
+                            comm.ExecuteNonQuery();
+                            conn.Close();
+                        }
+                        //查询照片检测情况
+                        conn.Open();
+                        if (status == 0)
+                        {
+                            Query2 = "insert into picture(detectiontime,qrcode,picName,path,time,picStatus) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picDir + "',now(),1)";
+                        }
+                        else
+                        {
+                            Query2 = "update picture set picStatus=picStatus+1 , time=now() WHERE qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "' and picName='" + hv_BaseName + "'";
+                        }
+                        comm.CommandText = Query2;
+                        comm.ExecuteNonQuery();
+                        conn.Close();
+                        #endregion   照片检测结束
                     }
                 }
-
-                AddDLTimingPoint(BuildDLTimingName(picDir, "14b_database_batch_count count=" + cameraBatchResults.Count.ToString()));
-                dlStepStart = StartDLStep(out dlStepStopwatch);
-                SaveCameraDetectionResults(conn, comm, cameraBatchResults);
-                FinishDLStep(BuildDLTimingName(picDir, "14_database_write"), dlStepStart, dlStepStopwatch);
 
             }
             catch (HalconException HDevExpDefaultException)
@@ -19148,7 +19216,6 @@ namespace IndustryDemo.Controllerui
                 hv_IsEqual2.Dispose();
                 hv_Mean1.Dispose();
                 hv_Deviation1.Dispose();
-                CloseDetectionConnection(conn, comm);
 
                 throw HDevExpDefaultException;
             }
@@ -19259,7 +19326,6 @@ namespace IndustryDemo.Controllerui
             hv_IsEqual2.Dispose();
             hv_Mean1.Dispose();
             hv_Deviation1.Dispose();
-            CloseDetectionConnection(conn, comm);
         }
 
         // Main procedure 
@@ -19269,11 +19335,8 @@ namespace IndustryDemo.Controllerui
             MySqlCommand comm = new MySqlCommand();
             comm.Connection = conn;
             string Query3 = "";
-            List<ImageDetectionDbRecord> cameraBatchResults = new List<ImageDetectionDbRecord>();
-            DateTime dlStepStart;
-            System.Diagnostics.Stopwatch dlStepStopwatch;
             // Local iconic variables 
-            //????С?????????????
+            //文件夹、文件名、扩展名
             //HTuple hv_BaseName = new HTuple(), hv_Extension = new HTuple(), hv_Directory = new HTuple();
 
             // Local iconic variables 
@@ -19447,8 +19510,8 @@ namespace IndustryDemo.Controllerui
                 //
                 //Example data folder containing the outputs of the previous example series.
                 hv_ExampleDataDir.Dispose();
-                //hv_ExampleDataDir = "G:/????????/??????/????????????";
-                hv_ExampleDataDir = "C:/Users/Administrator/Desktop/我的上位机程??3.3) - 定位划痕统计时间??.0??model/V12";
+                //hv_ExampleDataDir = "G:/新建文件夹/模型调试/内点扩充数据集";
+                hv_ExampleDataDir = "E:/li/我的上位机程序(3.3) - 定位划痕/model/V12";
                 //
                 //Load the trained or pretrained model for defects detection
                 //
@@ -19470,20 +19533,19 @@ namespace IndustryDemo.Controllerui
                 hv_ClassNames.Dispose();
                 hv_ClassNames = new HTuple();
                 hv_ClassNames[0] = "";
-                hv_ClassNames[1] = "\u5212\u75d5";
-                hv_ClassNames[2] = "\u5185\u5e03\u6bdb";
-                hv_ClassNames[3] = "\u6c34\u5370";
-                hv_ClassNames[4] = "\u5185\u70b9\u5b50";
-                hv_ClassNames[5] = "\u5d29\u8fb9";
-                hv_ClassNames[6] = "\u8150\u8680\u5370";
-                hv_ClassNames[7] = "\u70b9\u5b50";
-                hv_ClassNames[8] = "\u624b\u5370";
-                hv_ClassNames[9] = "\u9ebb\u70b9";
-                hv_ClassNames[10] = "\u5916\u5e03\u6bdb";
-                hv_ClassNames[11] = "\u8fb9\u7f18";
+                hv_ClassNames[1] = "划痕";
+                hv_ClassNames[2] = "内布毛";
+                hv_ClassNames[3] = "水印";
+                hv_ClassNames[4] = "内点子";
+                hv_ClassNames[5] = "崩边";
+                hv_ClassNames[6] = "腐蚀印";
+                hv_ClassNames[7] = "点子";
+                hv_ClassNames[8] = "手印";
+                hv_ClassNames[9] = "麻点";
+                hv_ClassNames[10] = "外布毛";
+                hv_ClassNames[11] = "边缘";
                 //hv_ClassNames[12] = "水印";
-                //hv_ClassNames[13] = "内点??;
-
+                //hv_ClassNames[13] = "内点子";
 
                 int[] level = { 0, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2 };
                 //Class IDs.
@@ -19534,29 +19596,26 @@ namespace IndustryDemo.Controllerui
                     }
                 }
                 //
-                dlStepStart = StartDLStep(out dlStepStopwatch);
+                //Check if all necessary files exist.
                 check_model_availability(hv_ExampleDataDir, hv_PreprocessParamFileName, hv_RetrainedModelFileName,
                     hv_UsePretrainedModel);
-                FinishDLStep(BuildDLTimingName(picDir, "01_model_file_check"), dlStepStart, dlStepStopwatch);
                 //
-                dlStepStart = StartDLStep(out dlStepStopwatch);
+                //Read in the retrained model.
                 hv_DLModelHandle.Dispose();
                 HOperatorSet.ReadDlModel(hv_RetrainedModelFileName, out hv_DLModelHandle);
-                FinishDLStep(BuildDLTimingName(picDir, "02_read_dl_model"), dlStepStart, dlStepStopwatch);
-                dlStepStart = StartDLStep(out dlStepStopwatch);
+                //Set the batch size.
                 HOperatorSet.SetDlModelParam(hv_DLModelHandle, "batch_size", hv_BatchSizeInference);
+                //Initialize the model for inference.
                 if ((int)(hv_UseGPU.TupleNot()) != 0)
                 {
                     HOperatorSet.SetDlModelParam(hv_DLModelHandle, "runtime", "cpu");
                 }
                 HOperatorSet.SetDlModelParam(hv_DLModelHandle, "runtime_init", "immediately");
-                FinishDLStep(BuildDLTimingName(picDir, "03_runtime_init"), dlStepStart, dlStepStopwatch);
                 //
-                dlStepStart = StartDLStep(out dlStepStopwatch);
+                //Get the parameters used for preprocessing.
                 hv_DLPreprocessParam.Dispose();
                 HOperatorSet.ReadDict(hv_PreprocessParamFileName, new HTuple(), new HTuple(),
                     out hv_DLPreprocessParam);
-                FinishDLStep(BuildDLTimingName(picDir, "04_read_preprocess_param"), dlStepStart, dlStepStopwatch);
                 //
                 //Set parameters for visualization of results.
                 hv_WindowHandleDict.Dispose();
@@ -19570,11 +19629,8 @@ namespace IndustryDemo.Controllerui
                 //List the files, the model should be applied to (e.g. using list_image_files).
                 //For this example, we select some images manually.
 
-                dlStepStart = StartDLStep(out dlStepStopwatch);
                 hv_ImageFiles.Dispose();
                 list_image_files(picDir, "default", new HTuple(), out hv_ImageFiles);
-                FinishDLStep(BuildDLTimingName(picDir, "05_list_image_files"), dlStepStart, dlStepStopwatch);
-                AddDLTimingPoint(BuildDLTimingName(picDir, "05b_image_file_count count=" + hv_ImageFiles.TupleLength().ToString()));
                 //
                 //Loop over all images in batches of size BatchSizeInference for inference.
                 HTuple end_val80 = ((((new HTuple(hv_ImageFiles.TupleLength()
@@ -19597,28 +19653,19 @@ namespace IndustryDemo.Controllerui
                             out hv_Extension, out hv_Directory);
                     }
                     //Read the images of the batch.
-                    dlStepStart = StartDLStep(out dlStepStopwatch);
                     ho_ImageBatch.Dispose();
                     HOperatorSet.ReadImage(out ho_ImageBatch, hv_Batch);
-                    FinishDLStep(BuildDLTimingName(picDir, "06_read_image"), dlStepStart, dlStepStopwatch);
-                    AddDLTimingPoint(BuildDLTimingName(picDir, "07_geometry_preprocess"));
                     //
                     //Generate the DLSampleBatch.
-                    dlStepStart = StartDLStep(out dlStepStopwatch);
                     hv_DLSampleBatch.Dispose();
                     gen_dl_samples_from_images(ho_ImageBatch, out hv_DLSampleBatch);
-                    FinishDLStep(BuildDLTimingName(picDir, "08_gen_dlsample"), dlStepStart, dlStepStopwatch);
                     //
                     //Preprocess the DLSampleBatch.
-                    dlStepStart = StartDLStep(out dlStepStopwatch);
                     preprocess_dl_samples(hv_DLSampleBatch, hv_DLPreprocessParam);
-                    FinishDLStep(BuildDLTimingName(picDir, "09_preprocess_dlsample"), dlStepStart, dlStepStopwatch);
                     //Apply the DL model on the DLSampleBatch.
-                    dlStepStart = StartDLStep(out dlStepStopwatch);
                     hv_DLResultBatch.Dispose();
                     HOperatorSet.ApplyDlModel(hv_DLModelHandle, hv_DLSampleBatch, (new HTuple("segmentation_image")).TupleConcat(
                         "segmentation_confidence"), out hv_DLResultBatch);
-                    FinishDLStep(BuildDLTimingName(picDir, "10_apply_dl_model"), dlStepStart, dlStepStopwatch);
                     //
                     //Postprocessing and visualization.
                     //Loop over each sample in the batch.
@@ -19628,7 +19675,6 @@ namespace IndustryDemo.Controllerui
                     {
                         //
 
-                        dlStepStart = StartDLStep(out dlStepStopwatch);
                         //Get result image.
                         using (HDevDisposeHelper dh = new HDevDisposeHelper())
                         {
@@ -19641,6 +19687,11 @@ namespace IndustryDemo.Controllerui
                         ho_ClassRegions.Dispose();
                         HOperatorSet.Threshold(ho_SegmentationImage, out ho_ClassRegions, hv_ClassIDs,
                             hv_ClassIDs);
+                        HObject filteredSurfaceClassRegions;
+                        FilterSurfaceGhostRegions(ho_ImageBatch, hv_SampleIndex, ho_SegmentationImage,
+                            ho_ClassRegions, hv_ClassIDs, out filteredSurfaceClassRegions);
+                        ho_ClassRegions.Dispose();
+                        ho_ClassRegions = filteredSurfaceClassRegions;
                         //
                         //Display results.
                         //dev_display_dl_data (DLSampleBatch[SampleIndex], DLResultBatch[SampleIndex], DatasetInfo, 'segmentation_image_result', GenParamDisplay, WindowHandleDict)
@@ -19653,7 +19704,6 @@ namespace IndustryDemo.Controllerui
                         //Get area of class regions.
                         hv_Areas.Dispose();
                         HOperatorSet.RegionFeatures(ho_ClassRegions, "area", out hv_Areas);
-                        FinishDLStep(BuildDLTimingName(picDir, "11_segmentation_region_calc"), dlStepStart, dlStepStopwatch);
 
                         if ((int)(new HTuple(((hv_Areas.TupleSelect(11))).TupleGreater(0))) != 0)
                         {
@@ -19704,12 +19754,7 @@ namespace IndustryDemo.Controllerui
                         hv_ROW3 = new HTuple();
                         hv_COL3.Dispose();
                         hv_COL3 = new HTuple();
-                            dlStepStart = StartDLStep(out dlStepStopwatch);
-                            Query3 = "";
-                        long postprocessGetDefLocElapsed = 0;
-                        long postprocessSqlAppendElapsed = 0;
-                        int postprocessGetDefLocCount = 0;
-                        int postprocessSqlAppendCount = 0;
+                        Query3 = "";
                         for (hv_ClassIndex = 1; (int)hv_ClassIndex <= (int)((new HTuple(hv_Areas.TupleLength()
                             )) - 1); hv_ClassIndex = (int)hv_ClassIndex + 1)
                         {
@@ -19722,8 +19767,8 @@ namespace IndustryDemo.Controllerui
                                     HOperatorSet.SelectObj(ho_ClassRegions, out ho_ClassRegion, hv_ClassIndex + 1);
                                 }
 
-                                #region ????????????????????????
-                                //???????????????????????????????????磬??????????
+                                #region 这里是计算划痕、亮点、内点子的尺寸
+                                //计算划痕、亮点和麻点（可当做内点子）、内点子的尺寸，其他执行默认
                                 switch (hv_ClassIndex.I)
                                 {
                                     case 1:
@@ -19761,7 +19806,7 @@ namespace IndustryDemo.Controllerui
                                                 hv_Column = ExpTmpLocalVar_Column;
                                             }
                                         }
-                                        //?????????????????????????????????????592*2048????
+                                        //计算区域边界最大距离，此处为划痕长度计算使用的是2592*2048坐标
                                         hv_Row11.Dispose(); hv_Column11.Dispose(); hv_Row21.Dispose(); hv_Column21.Dispose(); hv_Diameter.Dispose();
                                         HOperatorSet.DiameterRegion(ho_ConnectedRegions, out hv_Row11, out hv_Column11,
                                             out hv_Row21, out hv_Column21, out hv_Diameter);
@@ -19945,7 +19990,7 @@ namespace IndustryDemo.Controllerui
                                                     HOperatorSet.Contlength(ho_ObjectSelected2, out hv_ContLength);
                                                 }
                                             }
-                                            //?????????
+                                            //面积比周长
                                             if ((int)(new HTuple(hv_ContLength.TupleEqual(0))) != 0)
                                             {
                                                 hv_ScratchDiv2.Dispose();
@@ -19966,7 +20011,7 @@ namespace IndustryDemo.Controllerui
                                             hv_Tuple3[hv_i - 1] = hv_Mean3;
                                             //if (hv_Mean3.Length > 1)
                                             //    Console.WriteLine(hv_Batch.ToString());
-                                            //?????????洢??Tuple4??
+                                            //面积比周长存储在Tuple4里
                                             if (hv_Tuple4 == null)
                                                 hv_Tuple4 = new HTuple();
                                             if (hv_ScratchDiv2.Length > 1)
@@ -20135,7 +20180,7 @@ namespace IndustryDemo.Controllerui
                                                     hv_Column = ExpTmpLocalVar_Column;
                                                 }
                                             }
-                                            //???????????
+                                            //计算外接圆半径
                                             hv_Row3.Dispose(); hv_Column3.Dispose(); hv_Radius3.Dispose();
                                             HOperatorSet.SmallestCircle(ho_SelectedRegions, out hv_Row3, out hv_Column3,
                                                 out hv_Radius3);
@@ -20235,7 +20280,7 @@ namespace IndustryDemo.Controllerui
                                                     hv_Column = ExpTmpLocalVar_Column;
                                                 }
                                             }
-                                            //???????????
+                                            //计算外接圆半径
                                             hv_Row3.Dispose(); hv_Column3.Dispose(); hv_Radius3.Dispose();
                                             HOperatorSet.SmallestCircle(ho_SelectedRegions, out hv_Row3, out hv_Column3,
                                                 out hv_Radius3);
@@ -20316,7 +20361,7 @@ namespace IndustryDemo.Controllerui
                                                     hv_Column = ExpTmpLocalVar_Column;
                                                 }
                                             }
-                                            //???????????
+                                            //计算外接圆半径
                                             hv_Row3.Dispose(); hv_Column3.Dispose(); hv_Radius3.Dispose();
                                             HOperatorSet.SmallestCircle(ho_SelectedRegions, out hv_Row3, out hv_Column3,
                                                 out hv_Radius3);
@@ -20369,9 +20414,9 @@ namespace IndustryDemo.Controllerui
 
                                     bool tangleflag = true;
 
-                                    //?ж????????б??????
-                                    //????????н??????覴??????????????????????????????д???????
-                                    //??????????д???????????
+                                    //判断是否是含有边缘的图片
+                                    //若是则进行进一步的瑕疵到边缘距离以及是否在滤光片上的计算，最后写入数据库
+                                    //否则直接执行写入数据库操作
                                     //if ((int)(new HTuple(hv_Deviation.TupleGreater(25))) != 0)
                                     if (hv_Areas[11] > 0)
                                     {
@@ -20381,21 +20426,21 @@ namespace IndustryDemo.Controllerui
                                         HTuple step_val172 = 1;
                                         if (hv_ClassIndex != 11)
                                         {
-                                            //????覴???????????????????覴???????????е?????????
+                                            //计算瑕疵到每个拟合边缘线的距离以及瑕疵与其垂足之间中点坐标的灰度值
                                             for (hv_DIndex = 1; hv_DIndex.Continue(end_val172, step_val172); hv_DIndex = hv_DIndex.TupleAdd(step_val172))
                                             {
                                                 ho_ObjectSelected.Dispose();
                                                 HOperatorSet.SelectObj(ho_SelectedXLD, out ho_ObjectSelected,
                                                     hv_DIndex);
-                                                //?????????覴????????????
-                                                //xld?region
+                                                //通过垂足求瑕疵点到边缘的中心点
+                                                //xld转region
                                                 ho_RegionLines.Dispose();
                                                 HOperatorSet.GenRegionContourXld(ho_ObjectSelected, out ho_RegionLines,
                                                     "filled");
-                                                //??????????
+                                                //提取区域骨架
                                                 ho_Skeleton.Dispose();
                                                 HOperatorSet.Skeleton(ho_RegionLines, out ho_Skeleton);
-                                                //????????
+                                                //获取轮骨端点
                                                 ho_EndPoints.Dispose(); ho_JuncPoints.Dispose();
                                                 HOperatorSet.JunctionsSkeleton(ho_Skeleton, out ho_EndPoints,
                                                     out ho_JuncPoints);
@@ -20419,7 +20464,7 @@ namespace IndustryDemo.Controllerui
                                                         0), hv_Columns.TupleSelect(0), hv_Rows.TupleSelect(1), hv_Columns.TupleSelect(
                                                         1), out hv_RowProj, out hv_ColProj);
                                                 }
-                                                //????覴??????????
+                                                //计算瑕疵到边缘的距离
                                                 hv_Rowp.Dispose();
                                                 using (HDevDisposeHelper dh = new HDevDisposeHelper())
                                                 {
@@ -20440,7 +20485,7 @@ namespace IndustryDemo.Controllerui
                                                 }
                                                 hv_DistanceSet[hv_DIndex - 1] = hv_Distance;
 
-                                                //??????????е??
+                                                //计算该直线的中点
                                                 hv_RowM.Dispose();
                                                 using (HDevDisposeHelper dh = new HDevDisposeHelper())
                                                 {
@@ -20492,28 +20537,28 @@ namespace IndustryDemo.Controllerui
                                                     "bilinear", out hv_Grayval);
                                                 hv_GrayvalSet[hv_DIndex - 1] = hv_Grayval;
                                             }
-                                            //????覴?λ??????????е??????ж?覴?λ???
+                                            //根据瑕疵位置与垂足之间中点的灰度值判断瑕疵位置
                                             hv_GrayvalSetMin.Dispose();
                                             HOperatorSet.TupleMin(hv_GrayvalSet, out hv_GrayvalSetMin);
                                             if ((int)(new HTuple(hv_GrayvalSetMin.TupleLess(110))) != 0)
                                             {
-                                                //????覴???????????ж????д???????
+                                                //根据瑕疵到边缘的距离判断是否写入数据库
                                                 hv_DistanceSetMin.Dispose();
                                                 HOperatorSet.TupleMin(hv_DistanceSet, out hv_DistanceSetMin);
                                                 if ((int)(new HTuple(hv_DistanceSetMin.TupleGreater(5))) != 0)
                                                 {
                                                     if (tangleflag)
                                                     {
-                                                        //??????
+                                                        //排除边缘
                                                         if ((int)(new HTuple(hv_ClassIndex.TupleEqual(11))) != 0)
                                                         {
 
                                                             break;
                                                         }
-                                                        //???????д???????
+                                                        //划痕信息写入数据库
                                                         if ((int)(new HTuple(hv_ClassIndex.TupleEqual(1))) != 0)
                                                         {
-                                                            #region ????????????????????????
+                                                            #region 这里是把新检测的数据给存入进去
                                                             double picx, picy, trayx, trayy;
                                                             int trayxnum, trayynum;
                                                             zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -20526,7 +20571,7 @@ namespace IndustryDemo.Controllerui
                                                             cameraId = Convert.ToInt32(split[0]);
                                                             row = Convert.ToInt32(split[1]);
                                                             line = Convert.ToInt32(split[2]);
-                                                            double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                            double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                             if (xy[0] > 0)
                                                             {
                                                                 trayx = Math.Round(xy[0], 2);
@@ -20542,18 +20587,18 @@ namespace IndustryDemo.Controllerui
                                                                         {
                                                                             if ((int)(new HTuple(((hv_Tuple2.TupleSelect(hv_ConnectIndex))).TupleNotEqual(0))) != 0)
                                                                             {
-                                                                                //Tuple2[i - 1] > 2.5????滮???
+                                                                                //Tuple2[i - 1] > 2.5为背面划痕。
                                                                                 if ((int)(new HTuple(((hv_Tuple2.TupleSelect(hv_ConnectIndex))).TupleGreater(2.5))) != 0)
                                                                                 {
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,scratchLength) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Diameter[hv_ConnectIndex] * 0.006 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                                                    Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,scratchLength) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Diameter[hv_ConnectIndex] * 0.006 + "');";
                                                                                 }
                                                                             }
                                                                             else
                                                                             {
-                                                                                //????3???????ж????滮?????????
+                                                                                //以下3个都是判断吧背面划痕的条件。
                                                                                 if ((int)((new HTuple((new HTuple((new HTuple(75)).TupleLess(hv_Tuple3.TupleSelect(hv_ConnectIndex)))).TupleLess(95))).TupleAnd(new HTuple(((hv_Tuple4.TupleSelect(hv_ConnectIndex))).TupleGreater(4.0)))) != 0)
                                                                                 {
                                                                                 }
@@ -20569,7 +20614,7 @@ namespace IndustryDemo.Controllerui
                                                                         }
                                                                         else
                                                                         {
-                                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,scratchLength) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Diameter[hv_ConnectIndex] * 0.006 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,scratchLength) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Diameter[hv_ConnectIndex] * 0.006 + "');";
                                                                         }
                                                                     }
                                                                     ////MessageBox.Show(trayxnum + "," + trayynum);
@@ -20578,16 +20623,16 @@ namespace IndustryDemo.Controllerui
                                                                     ////cmd2 = new MySqlCommand(Query3, conn);
                                                                     ////cmd2.ExecuteNonQuery();
                                                                     ////conn.Close();
-                                                                    //////????????????
+                                                                    //////查询照片检测情况
                                                                     tangleflag = false;
                                                                 }
                                                             }
-                                                            #endregion  ???????????
+                                                            #endregion  新增数据结束
                                                         }
-                                                        //???????д???????
+                                                        //点子信息写入数据库
                                                         else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(7))) != 0)
                                                         {
-                                                            #region ????????????????????????
+                                                            #region 这里是把新检测的数据给存入进去
                                                             double picx, picy, trayx, trayy;
                                                             int trayxnum, trayynum;
                                                             zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -20600,7 +20645,7 @@ namespace IndustryDemo.Controllerui
                                                             cameraId = Convert.ToInt32(split[0]);
                                                             row = Convert.ToInt32(split[1]);
                                                             line = Convert.ToInt32(split[2]);
-                                                            double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                            double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                             if (xy[0] > 0)
                                                             {
                                                                 trayx = Math.Round(xy[0], 2);
@@ -20612,27 +20657,27 @@ namespace IndustryDemo.Controllerui
                                                                 {
                                                                     if ((int)(new HTuple(((hv_Tuple1.TupleSelect(hv_ConnectIndex))).TupleGreater(135.00))) != 0)
                                                                     {
-                                                                        Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                                        Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');";
                                                                     }
                                                                     else
                                                                     {
                                                                         //MessageBox.Show(trayxnum + "," + trayynum);
                                                                         //conn.Open();
-                                                                        Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                                        Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');";
                                                                         //cmd2 = new MySqlCommand(Query3, conn);
                                                                         //cmd2.ExecuteNonQuery();
                                                                         //conn.Close();
-                                                                        ////????????????
+                                                                        ////查询照片检测情况
                                                                     }
                                                                     tangleflag = false;
                                                                 }
                                                             }
-                                                            #endregion  ???????????
+                                                            #endregion  新增数据结束
                                                         }
-                                                        //????????????д???????
+                                                        //腐蚀印数据筛选并写入数据库
                                                         else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(6))) != 0)
                                                         {
-                                                            #region ????????????????????????
+                                                            #region 这里是把新检测的数据给存入进去
                                                             double picx, picy, trayx, trayy;
                                                             int trayxnum, trayynum;
                                                             zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -20645,7 +20690,7 @@ namespace IndustryDemo.Controllerui
                                                             cameraId = Convert.ToInt32(split[0]);
                                                             row = Convert.ToInt32(split[1]);
                                                             line = Convert.ToInt32(split[2]);
-                                                            double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                            double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                             if (xy[0] > 0)
                                                             {
                                                                 trayx = Math.Round(xy[0], 2);
@@ -20693,11 +20738,11 @@ namespace IndustryDemo.Controllerui
                                                                         {
                                                                             //MessageBox.Show(trayxnum + "," + trayynum);
                                                                             //conn.Open();
-                                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');";
                                                                             //cmd2 = new MySqlCommand(Query3, conn);
                                                                             //cmd2.ExecuteNonQuery();
                                                                             //conn.Close();
-                                                                            ////????????????
+                                                                            ////查询照片检测情况
                                                                         }
                                                                     }
                                                                     else
@@ -20707,12 +20752,12 @@ namespace IndustryDemo.Controllerui
                                                                     tangleflag = false;
                                                                 }
                                                             }
-                                                            #endregion  ???????????
+                                                            #endregion  新增数据结束
                                                         }
-                                                        //???????????д???????
+                                                        //手印数据筛选并写入数据库
                                                         else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(8))) != 0)
                                                         {
-                                                            #region ????????????????????????
+                                                            #region 这里是把新检测的数据给存入进去
                                                             double picx, picy, trayx, trayy;
                                                             int trayxnum, trayynum;
                                                             zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -20725,7 +20770,7 @@ namespace IndustryDemo.Controllerui
                                                             cameraId = Convert.ToInt32(split[0]);
                                                             row = Convert.ToInt32(split[1]);
                                                             line = Convert.ToInt32(split[2]);
-                                                            double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                            double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                             if (xy[0] > 0)
                                                             {
                                                                 trayx = Math.Round(xy[0], 2);
@@ -20737,20 +20782,20 @@ namespace IndustryDemo.Controllerui
                                                                 {
                                                                     //MessageBox.Show(trayxnum + "," + trayynum);
                                                                     //conn.Open();
-                                                                    Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                                    Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');";
                                                                     //cmd2 = new MySqlCommand(Query3, conn);
                                                                     //cmd2.ExecuteNonQuery();
                                                                     //conn.Close();
-                                                                    ////????????????
+                                                                    ////查询照片检测情况
                                                                     tangleflag = false;
                                                                 }
                                                             }
-                                                            #endregion  ???????????
+                                                            #endregion  新增数据结束
                                                         }
-                                                        //??????д????????
+                                                        //麻点信息写入数据库
                                                         else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(9))) != 0)
                                                         {
-                                                            #region ????????????????????????
+                                                            #region 这里是把新检测的数据给存入进去
                                                             double picx, picy, trayx, trayy;
                                                             int trayxnum, trayynum;
                                                             zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -20763,7 +20808,7 @@ namespace IndustryDemo.Controllerui
                                                             cameraId = Convert.ToInt32(split[0]);
                                                             row = Convert.ToInt32(split[1]);
                                                             line = Convert.ToInt32(split[2]);
-                                                            double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                            double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                             if (xy[0] > 0)
                                                             {
                                                                 trayx = Math.Round(xy[0], 2);
@@ -20777,20 +20822,20 @@ namespace IndustryDemo.Controllerui
                                                                 {
                                                                     //MessageBox.Show(trayxnum + "," + trayynum);
                                                                     //conn.Open();
-                                                                    Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                                    Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');";
                                                                     //cmd2 = new MySqlCommand(Query3, conn);
                                                                     //cmd2.ExecuteNonQuery();
                                                                     //conn.Close();
-                                                                    ////????????????
+                                                                    ////查询照片检测情况
                                                                     tangleflag = false;
                                                                 }
                                                             }
-                                                            #endregion  ???????????
+                                                            #endregion  新增数据结束
                                                         }
-                                                        //????????д???????
+                                                        //内点子信息写入数据库
                                                         else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(4))) != 0)
                                                         {
-                                                            #region ????????????????????????
+                                                            #region 这里是把新检测的数据给存入进去
                                                             double picx, picy, trayx, trayy;
                                                             int trayxnum, trayynum;
                                                             zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -20803,7 +20848,7 @@ namespace IndustryDemo.Controllerui
                                                             cameraId = Convert.ToInt32(split[0]);
                                                             row = Convert.ToInt32(split[1]);
                                                             line = Convert.ToInt32(split[2]);
-                                                            double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                            double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                             if (xy[0] > 0)
                                                             {
                                                                 trayx = Math.Round(xy[0], 2);
@@ -20817,27 +20862,27 @@ namespace IndustryDemo.Controllerui
                                                                     if ((int)((new HTuple(((hv_Tuple1.TupleSelect(hv_ConnectIndex))).TupleGreater(100.00))).TupleAnd(new HTuple(((hv_Radius3.TupleSelect(hv_ConnectIndex))).TupleGreater(4.00)))) != 0)
                                                                     { //MessageBox.Show(trayxnum + "," + trayynum);
                                                                       //conn.Open();
-                                                                        Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                                        Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');";
                                                                     }
                                                                     else
                                                                     {
                                                                         //cmd2 = new MySqlCommand(Query3, conn);
                                                                         //cmd2.ExecuteNonQuery();
                                                                         //conn.Close();
-                                                                        ////????????????
+                                                                        ////查询照片检测情况
                                                                         //Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[0] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');";
                                                                     }
                                                                     tangleflag = false;
                                                                 }
                                                                 //else if (cameraId > 4 && hv_Area.TupleSelect(hv_ConnectIndex) >= 3 && trayx > 0 && trayy > 0 && trayy < 340 && trayx < 350 && trayxnum >= 0 && trayxnum < Global.optRow && trayynum >= 0 && trayynum < Global.optLine && hv_ClassIndex == 13)
                                                                 //{
-                                                                //    string order = "select trayX,trayY,posX,posY,defectionType,upordown from defection where qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "' and posX='" + trayxnum + "' and posY='" + trayynum + "' and upordown='" + 1 + "' and defectionType IN ('????','?????') ";
+                                                                //    string order = "select trayX,trayY,posX,posY,defectionType,upordown from defection where qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "' and posX='" + trayxnum + "' and posY='" + trayynum + "' and upordown='" + 1 + "' and defectionType IN ('点子','内点子') ";
                                                                 //    DataTable pinhole_now = MySqlHelper.GetDataTable(out err1, order);
                                                                 //    //bool ispinhole = MySqlHelper.IsCoordinateWithinOne(pinhole_now, "trayX", "trayY", trayx, trayy);
                                                                 //    bool ispinhole = MySqlHelper.CompareCoordinatesAndUpMySQL(pinhole_now, "trayX", "trayY", trayx, trayy, trayxnum, trayynum);
                                                                 //    if (ispinhole == true)
                                                                 //    {
-                                                                //        Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + "???? + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 0 + "');";
+                                                                //        Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + "针孔" + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 0 + "');";
                                                                 //        tangleflag = false;
                                                                 //    }
                                                                 //    else
@@ -20847,12 +20892,12 @@ namespace IndustryDemo.Controllerui
                                                                 //    }
                                                                 //}
                                                             }
-                                                            #endregion  ???????????
+                                                            #endregion  新增数据结束
                                                         }
-                                                        //???????д???????
+                                                        //内布毛信息写入数据库
                                                         else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(2))) != 0)
                                                         {
-                                                            #region ????????????????????????
+                                                            #region 这里是把新检测的数据给存入进去
                                                             double picx, picy, trayx, trayy;
                                                             int trayxnum, trayynum;
                                                             zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -20865,7 +20910,7 @@ namespace IndustryDemo.Controllerui
                                                             cameraId = Convert.ToInt32(split[0]);
                                                             row = Convert.ToInt32(split[1]);
                                                             line = Convert.ToInt32(split[2]);
-                                                            double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                            double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                             if (xy[0] > 0)
                                                             {
                                                                 trayx = Math.Round(xy[0], 2);
@@ -20877,20 +20922,20 @@ namespace IndustryDemo.Controllerui
                                                                 {
                                                                     //MessageBox.Show(trayxnum + "," + trayynum);
                                                                     //conn.Open();
-                                                                    Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                                    Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "');";
                                                                     //cmd2 = new MySqlCommand(Query3, conn);
                                                                     //cmd2.ExecuteNonQuery();
                                                                     //conn.Close();
-                                                                    ////????????????
+                                                                    ////查询照片检测情况
                                                                     tangleflag = false;
                                                                 }
                                                             }
-                                                            #endregion  ???????????
+                                                            #endregion  新增数据结束
                                                         }
-                                                        //????覴????д???????
+                                                        //其他瑕疵信息写入数据库
                                                         else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(0))) == 0)
                                                         {
-                                                            #region ????????????????????????
+                                                            #region 这里是把新检测的数据给存入进去
                                                             double picx, picy, trayx, trayy;
                                                             int trayxnum, trayynum;
                                                             zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -20903,7 +20948,7 @@ namespace IndustryDemo.Controllerui
                                                             cameraId = Convert.ToInt32(split[0]);
                                                             row = Convert.ToInt32(split[1]);
                                                             line = Convert.ToInt32(split[2]);
-                                                            double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                            double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                             if (xy[0] > 0)
                                                             {
                                                                 trayx = Math.Round(xy[0], 2);
@@ -20917,15 +20962,15 @@ namespace IndustryDemo.Controllerui
                                                                 {
                                                                     //MessageBox.Show(trayxnum + "," + trayynum);
                                                                     //conn.Open();
-                                                                    Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                                    Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "');";
                                                                     //cmd2 = new MySqlCommand(Query3, conn);
                                                                     //cmd2.ExecuteNonQuery();
                                                                     //conn.Close();
-                                                                    ////????????????
+                                                                    ////查询照片检测情况
                                                                     tangleflag = false;
                                                                 }
                                                             }
-                                                            #endregion  ???????????
+                                                            #endregion  新增数据结束
                                                         }
                                                     }
                                                 }
@@ -20934,19 +20979,19 @@ namespace IndustryDemo.Controllerui
                                     }
                                     else
                                     {
-                                        //д???????
+                                        //写入数据库
                                         if (tangleflag)
                                         {
-                                            //??????
+                                            //排除边缘
                                             if ((int)(new HTuple(hv_ClassIndex.TupleEqual(11))) != 0)
                                             {
 
                                                 break;
                                             }
-                                            //???????д???????
+                                            //划痕信息写入数据库
                                             if ((int)(new HTuple(hv_ClassIndex.TupleEqual(1))) != 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -20959,7 +21004,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -20973,18 +21018,18 @@ namespace IndustryDemo.Controllerui
                                                         {
                                                             if ((int)(new HTuple(((hv_Tuple2.TupleSelect(hv_ConnectIndex))).TupleNotEqual(0))) != 0)
                                                             {
-                                                                //Tuple2[i - 1] > 2.5????滮???
+                                                                //Tuple2[i - 1] > 2.5为背面划痕。
                                                                 if ((int)(new HTuple(((hv_Tuple2.TupleSelect(hv_ConnectIndex))).TupleGreater(2.5))) != 0)
                                                                 {
                                                                 }
                                                                 else
                                                                 {
-                                                                    Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,scratchLength) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Diameter[hv_ConnectIndex] * 0.006 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                                    Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,scratchLength) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Diameter[hv_ConnectIndex] * 0.006 + "');";
                                                                 }
                                                             }
                                                             else
                                                             {
-                                                                //????3???????ж????滮?????????
+                                                                //以下3个都是判断吧背面划痕的条件。
                                                                 if ((int)((new HTuple((new HTuple((new HTuple(75)).TupleLess(hv_Tuple3.TupleSelect(hv_ConnectIndex)))).TupleLess(95))).TupleAnd(new HTuple(((hv_Tuple4.TupleSelect(hv_ConnectIndex))).TupleGreater(4.0)))) != 0)
                                                                 {
                                                                 }
@@ -20999,7 +21044,7 @@ namespace IndustryDemo.Controllerui
                                                         }
                                                         else
                                                         {
-                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,scratchLength) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Diameter[hv_ConnectIndex] * 0.006 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,scratchLength) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Diameter[hv_ConnectIndex] * 0.006 + "');";
                                                         }
                                                         ////MessageBox.Show(trayxnum + "," + trayynum);
                                                         ////conn.Open();
@@ -21007,16 +21052,16 @@ namespace IndustryDemo.Controllerui
                                                         ////cmd2 = new MySqlCommand(Query3, conn);
                                                         ////cmd2.ExecuteNonQuery();
                                                         ////conn.Close();
-                                                        //////????????????
+                                                        //////查询照片检测情况
                                                         tangleflag = false;
                                                     }
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
-                                            //????????д???????
+                                            //内点子信息写入数据库
                                             else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(4))) != 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -21029,7 +21074,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -21044,7 +21089,7 @@ namespace IndustryDemo.Controllerui
                                                         {
                                                             //MessageBox.Show(trayxnum + "," + trayynum);
                                                             //conn.Open();
-                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');";
                                                         }
                                                         else
                                                         {
@@ -21052,17 +21097,17 @@ namespace IndustryDemo.Controllerui
                                                             //cmd2 = new MySqlCommand(Query3, conn);
                                                             //cmd2.ExecuteNonQuery();
                                                             //conn.Close();
-                                                            ////????????????
+                                                            ////查询照片检测情况
                                                         }
                                                         tangleflag = false;
                                                     }
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
-                                            //???????д???????
+                                            //点子信息写入数据库
                                             else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(7))) != 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -21075,7 +21120,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -21088,27 +21133,27 @@ namespace IndustryDemo.Controllerui
                                                     {
                                                         if ((int)(new HTuple(((hv_Tuple1.TupleSelect(hv_ConnectIndex))).TupleGreater(135.00))) != 0)
                                                         {
-                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');";
                                                         }
                                                         else
                                                         {
                                                             //MessageBox.Show(trayxnum + "," + trayynum);
                                                             //conn.Open();
-                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');";
                                                             //cmd2 = new MySqlCommand(Query3, conn);
                                                             //cmd2.ExecuteNonQuery();
                                                             //conn.Close();
-                                                            ////????????????
+                                                            ////查询照片检测情况
                                                         }
                                                         tangleflag = false;
                                                     }
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
-                                            //???????д???????
+                                            //腐蚀印信息写入数据库
                                             else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(6))) != 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -21121,7 +21166,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -21137,11 +21182,11 @@ namespace IndustryDemo.Controllerui
                                                         {
                                                             //MessageBox.Show(trayxnum + "," + trayynum);
                                                             //conn.Open();
-                                                            Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                            Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');";
                                                             //cmd2 = new MySqlCommand(Query3, conn);
                                                             //cmd2.ExecuteNonQuery();
                                                             //conn.Close();
-                                                            ////????????????
+                                                            ////查询照片检测情况
                                                         }
                                                         else
                                                         {
@@ -21150,12 +21195,12 @@ namespace IndustryDemo.Controllerui
                                                         tangleflag = false;
                                                     }
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
-                                            //???????????д???????
+                                            //手印数据筛选并写入数据库
                                             else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(8))) != 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -21168,7 +21213,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -21180,20 +21225,20 @@ namespace IndustryDemo.Controllerui
                                                     {
                                                         //MessageBox.Show(trayxnum + "," + trayynum);
                                                         //conn.Open();
-                                                        Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                        Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "');";
                                                         //cmd2 = new MySqlCommand(Query3, conn);
                                                         //cmd2.ExecuteNonQuery();
                                                         //conn.Close();
-                                                        ////????????????
+                                                        ////查询照片检测情况
                                                         tangleflag = false;
                                                     }
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
-                                            //??????д????????
+                                            //麻点信息写入数据库
                                             else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(9))) != 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -21206,7 +21251,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -21219,21 +21264,21 @@ namespace IndustryDemo.Controllerui
                                                     {
                                                         //MessageBox.Show(trayxnum + "," + trayynum);
                                                         //conn.Open();
-                                                        Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                        Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel,pinholeRadius,upordown) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[4] + "','" + hv_Area.TupleSelect(hv_ConnectIndex) + "','" + level[hv_ClassIndex] + "','" + hv_Radius3[hv_ConnectIndex] * 0.006 * 2 + "','" + 1 + "');";
                                                         //cmd2 = new MySqlCommand(Query3, conn);
                                                         //cmd2.ExecuteNonQuery();
                                                         //conn.Close();
-                                                        ////????????????
+                                                        ////查询照片检测情况
                                                         tangleflag = false;
                                                     }
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
 
-                                            //???????д???????
+                                            //内布毛信息写入数据库
                                             else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(2))) != 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -21246,7 +21291,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -21258,20 +21303,20 @@ namespace IndustryDemo.Controllerui
                                                     {
                                                         //MessageBox.Show(trayxnum + "," + trayynum);
                                                         //conn.Open();
-                                                        Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                        Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "');";
                                                         //cmd2 = new MySqlCommand(Query3, conn);
                                                         //cmd2.ExecuteNonQuery();
                                                         //conn.Close();
-                                                        ////????????????
+                                                        ////查询照片检测情况
                                                         tangleflag = false;
                                                     }
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
-                                            //????覴????д???????
+                                            //其他瑕疵信息写入数据库
                                             else if ((int)(new HTuple(hv_ClassIndex.TupleEqual(0))) == 0)
                                             {
-                                                #region ????????????????????????
+                                                #region 这里是把新检测的数据给存入进去
                                                 double picx, picy, trayx, trayy;
                                                 int trayxnum, trayynum;
                                                 zx = hv_Row.TupleSelect(hv_ConnectIndex).ToString();
@@ -21284,7 +21329,7 @@ namespace IndustryDemo.Controllerui
                                                 cameraId = Convert.ToInt32(split[0]);
                                                 row = Convert.ToInt32(split[1]);
                                                 line = Convert.ToInt32(split[2]);
-                                                double[] xy = TimedGetDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy), ref postprocessGetDefLocElapsed, ref postprocessGetDefLocCount);
+                                                double[] xy = getDefLoc(cameraId, row, line, Convert.ToDouble(zx), Convert.ToDouble(zy));
                                                 if (xy[0] > 0)
                                                 {
                                                     trayx = Math.Round(xy[0], 2);
@@ -21298,42 +21343,57 @@ namespace IndustryDemo.Controllerui
                                                     {
                                                         //MessageBox.Show(trayxnum + "," + trayynum);
                                                         //conn.Open();
-                                                        Query3 = AppendTimedDefectionSql(Query3, "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "');", ref postprocessSqlAppendElapsed, ref postprocessSqlAppendCount);
+                                                        Query3 += "insert into defection(detectiontime,qrcode,picName,picX,picY,trayX,trayY,posX,posY,defectionType,area,defectionLevel) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picx + "','" + picy + "','" + trayx + "','" + trayy + "','" + trayxnum + "','" + trayynum + "','" + hv_ClassNames[hv_ClassIndex] + "','" + hv_Area.TupleSelect(0) + "','" + level[hv_ClassIndex] + "');";
                                                         //cmd2 = new MySqlCommand(Query3, conn);
                                                         //cmd2.ExecuteNonQuery();
                                                         //conn.Close();
-                                                        ////????????????
+                                                        ////查询照片检测情况
                                                         tangleflag = false;
                                                     }
                                                 }
-                                                #endregion  ???????????
+                                                #endregion  新增数据结束
                                             }
                                         }
                                     }
                                 }
                             }
                         }
-                        #region ?????????????????????????????????????????????
-                        long postprocessTotalElapsed = dlStepStopwatch.ElapsedMilliseconds;
-                        FinishDLStep(BuildDLTimingName(picDir, "12_rule_postprocess_13_sql_build"), dlStepStart, dlStepStopwatch);
-                        AddDLTimingDuration(BuildDLTimingName(picDir, "12a_get_def_loc"), postprocessGetDefLocElapsed);
-                        AddDLTimingPoint(BuildDLTimingName(picDir, "12a_get_def_loc_count count=" + postprocessGetDefLocCount.ToString()));
-                        AddDLTimingDuration(BuildDLTimingName(picDir, "12b_sql_string_append"), postprocessSqlAppendElapsed);
-                        AddDLTimingPoint(BuildDLTimingName(picDir, "12b_sql_string_append_count count=" + postprocessSqlAppendCount.ToString()));
-                        AddDLTimingDuration(BuildDLTimingName(picDir, "12c_rule_other_calc"), postprocessTotalElapsed - postprocessGetDefLocElapsed - postprocessSqlAppendElapsed);
-                        AddDLTimingPoint(BuildDLTimingName(picDir, "13_query3_status query_empty=" + (Query3 == "").ToString() + " query_chars=" + Query3.Length.ToString()));
-                        dlStepStart = StartDLStep(out dlStepStopwatch);
-                        AddImageDetectionResult(cameraBatchResults, Query3, hv_BaseName.ToString(), picDir);
-                        FinishDLStep(BuildDLTimingName(picDir, "14_database_queue"), dlStepStart, dlStepStopwatch);
+                        #region 照片的检测情况管理，存在则加一，不存在则新增一条记录
+                        string Query2 = "";
+                        conn.Open();
+                        comm.Connection = conn;
+                        comm.CommandText = "select count(picStatus) from picture WHERE qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "' and picName='" + hv_BaseName + "'";     //拼接sql语句
+                        MySqlDataReader trayTableReader;
+                        trayTableReader = comm.ExecuteReader();
+                        trayTableReader.Read();
+                        int status = Convert.ToInt32(trayTableReader.GetValue(0));
+                        conn.Close();
+                        //查询照片检测情况
+                        if (Query3 != "")
+                        {
+                            conn.Open();
+                            comm.CommandText = Query3;
+                            comm.ExecuteNonQuery();
+                            conn.Close();
+                        }
+                        //查询照片检测情况
+                        conn.Open();
+                        if (status == 0)
+                        {
+                            Query2 = "insert into picture(detectiontime,qrcode,picName,path,time,picStatus) value('" + Global.detectiontime + "','" + Global.qrCode + "','" + hv_BaseName + "','" + picDir + "',now(),1)";
+                        }
+                        else
+                        {
+                            Query2 = "update picture set picStatus=picStatus+1 , time=now() WHERE qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "' and picName='" + hv_BaseName + "'";
+                        }
+                        comm.CommandText = Query2;
+                        comm.ExecuteNonQuery();
+                        conn.Close();
 
-                        #endregion   ?????????
+                        #endregion   照片检测结束
 
                     }
                 }
-                AddDLTimingPoint(BuildDLTimingName(picDir, "14b_database_batch_count count=" + cameraBatchResults.Count.ToString()));
-                dlStepStart = StartDLStep(out dlStepStopwatch);
-                SaveCameraDetectionResults(conn, comm, cameraBatchResults);
-                FinishDLStep(BuildDLTimingName(picDir, "14_database_write"), dlStepStart, dlStepStopwatch);
             }
 
             catch (HalconException HDevExpDefaultException)
@@ -21479,7 +21539,6 @@ namespace IndustryDemo.Controllerui
                 hv_Distance1.Dispose();
                 hv_DistanceSet1.Dispose();
                 hv_DistanceSetMin1.Dispose();
-                CloseDetectionConnection(conn, comm);
 
                 throw HDevExpDefaultException;
             }
@@ -21624,7 +21683,6 @@ namespace IndustryDemo.Controllerui
             hv_Distance1.Dispose();
             hv_DistanceSet1.Dispose();
             hv_DistanceSetMin1.Dispose();
-            CloseDetectionConnection(conn, comm);
 
         }
     }

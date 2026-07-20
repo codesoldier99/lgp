@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Data;
-using System.IO;
 using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
@@ -104,190 +102,6 @@ namespace IndustryDemo.Controllerui
 
         private string err;
 
-        #region 检测耗时统计
-        private class TimingRecord
-        {
-            public string Name { get; set; }
-            public DateTime StartTime { get; set; }
-            public DateTime EndTime { get; set; }
-            public long ElapsedMilliseconds { get; set; }
-        }
-
-        private readonly object timingLock = new object();
-        private readonly List<TimingRecord> timingRecords = new List<TimingRecord>();
-        private readonly Stopwatch totalStopwatch = new Stopwatch();
-        private ProgressBarControl detectionProgressBar;
-        private LabelControl detectionProgressLabel;
-
-        private void ResetTiming()
-        {
-            lock (timingLock)
-            {
-                timingRecords.Clear();
-            }
-
-            totalStopwatch.Reset();
-            totalStopwatch.Start();
-            DetectionWithDL2.TimingRecorder = AddTiming;
-            AddTiming("检测开始", DateTime.Now, DateTime.Now, 0);
-        }
-
-        private DateTime StartTimingStep(out Stopwatch stopwatch)
-        {
-            DateTime startTime = DateTime.Now;
-            stopwatch = Stopwatch.StartNew();
-            return startTime;
-        }
-
-        private void FinishTimingStep(string name, DateTime startTime, Stopwatch stopwatch)
-        {
-            stopwatch.Stop();
-            AddTiming(name, startTime, DateTime.Now, stopwatch.ElapsedMilliseconds);
-        }
-
-        private void AddTiming(string name, DateTime startTime, DateTime endTime, long elapsedMilliseconds)
-        {
-            lock (timingLock)
-            {
-                timingRecords.Add(new TimingRecord
-                {
-                    Name = name,
-                    StartTime = startTime,
-                    EndTime = endTime,
-                    ElapsedMilliseconds = elapsedMilliseconds
-                });
-            }
-        }
-
-        private string BuildTimingSummary()
-        {
-            List<TimingRecord> snapshot;
-            lock (timingLock)
-            {
-                snapshot = new List<TimingRecord>(timingRecords);
-            }
-            snapshot = snapshot.OrderBy(record => record.StartTime).ToList();
-
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("检测耗时统计");
-            stringBuilder.AppendLine("二维码：" + Global.qrCode);
-            stringBuilder.AppendLine("检测时间：" + Global.detectiontime);
-            stringBuilder.AppendLine("图片批次：" + GetTimingImageBatch());
-            stringBuilder.AppendLine("图片目录：" + GetTimingImageDirectory());
-            stringBuilder.AppendLine("记录格式：步骤 | 开始时间 | 结束时间 | 耗时");
-            foreach (TimingRecord timingRecord in snapshot)
-            {
-                stringBuilder.AppendLine(
-                    timingRecord.Name + " | " +
-                    timingRecord.StartTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + " | " +
-                    timingRecord.EndTime.ToString("yyyy-MM-dd HH:mm:ss.fff") + " | " +
-                    FormatElapsed(timingRecord.ElapsedMilliseconds));
-            }
-            stringBuilder.AppendLine("总耗时：" + FormatElapsed(totalStopwatch.ElapsedMilliseconds));
-
-            return stringBuilder.ToString();
-        }
-
-        private string FormatElapsed(long elapsedMilliseconds)
-        {
-            return string.Format("{0:0.000}s", elapsedMilliseconds / 1000.0);
-        }
-
-        private string GetTimingImageBatch()
-        {
-            if (!string.IsNullOrEmpty(Global.detectiontime_test))
-            {
-                return Global.detectiontime_test;
-            }
-
-            return string.IsNullOrEmpty(Global.detectiontime) ? DateTime.Now.ToString("yyyy-M-d-H-m") : Global.detectiontime;
-        }
-
-        private string GetTimingImageDirectory()
-        {
-            string qrCode = string.IsNullOrEmpty(Global.qrCode) ? "UnknownQRCode" : Global.qrCode;
-            return Path.Combine("D:\\", qrCode, GetTimingImageBatch());
-        }
-
-        private string SaveTimingSummary()
-        {
-            string timingDirectory = GetTimingImageDirectory();
-            Directory.CreateDirectory(timingDirectory);
-            string timingFilePath = Path.Combine(timingDirectory, "耗时统计.txt");
-            File.WriteAllText(timingFilePath, BuildTimingSummary(), Encoding.UTF8);
-            return timingFilePath;
-        }
-
-        private void FinishTimingAndSave()
-        {
-            totalStopwatch.Stop();
-            AddTiming("检测结束", DateTime.Now, DateTime.Now, 0);
-            try
-            {
-                string timingFilePath = SaveTimingSummary();
-                Addlog("检测耗时统计已保存：" + timingFilePath);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("保存检测耗时统计失败：\r\n" + ex.Message, "检测耗时统计");
-            }
-            finally
-            {
-                DetectionWithDL2.TimingRecorder = null;
-            }
-        }
-        #endregion
-
-        #region 检测进度显示
-        private void InitializeDetectionProgressPanel()
-        {
-            detectionProgressLabel = new LabelControl();
-            detectionProgressLabel.Appearance.Font = new Font("Tahoma", 9F);
-            detectionProgressLabel.Appearance.Options.UseFont = true;
-            detectionProgressLabel.AutoSizeMode = LabelAutoSizeMode.None;
-            detectionProgressLabel.Location = new Point(437, 439);
-            detectionProgressLabel.Name = "detectionProgressLabel";
-            detectionProgressLabel.Size = new Size(286, 18);
-            detectionProgressLabel.Text = "检测进度：等待开始";
-
-            detectionProgressBar = new ProgressBarControl();
-            detectionProgressBar.Location = new Point(437, 462);
-            detectionProgressBar.Name = "detectionProgressBar";
-            detectionProgressBar.Size = new Size(286, 24);
-            detectionProgressBar.Properties.Minimum = 0;
-            detectionProgressBar.Properties.Maximum = 100;
-            detectionProgressBar.Properties.ShowTitle = true;
-            detectionProgressBar.Properties.PercentView = true;
-            detectionProgressBar.EditValue = 0;
-
-            splitContainerControl1.Panel1.Controls.Add(detectionProgressLabel);
-            splitContainerControl1.Panel1.Controls.Add(detectionProgressBar);
-            detectionProgressLabel.BringToFront();
-            detectionProgressBar.BringToFront();
-        }
-
-        private void UpdateDetectionProgress(int value, string status)
-        {
-            if (detectionProgressBar == null || detectionProgressLabel == null || IsDisposed)
-            {
-                return;
-            }
-
-            if (InvokeRequired)
-            {
-                BeginInvoke(new Action<int, string>(UpdateDetectionProgress), value, status);
-                return;
-            }
-
-            value = Math.Max(0, Math.Min(100, value));
-            detectionProgressBar.EditValue = value;
-            detectionProgressLabel.Text = "检测进度：" + status + "  " + value + "%";
-            detectionProgressLabel.Refresh();
-            detectionProgressBar.Refresh();
-            Application.DoEvents();
-        }
-        #endregion
-
         //虚拟盘变量
         private int BlockWidth;     //虚拟盘里圆的宽
         private int BlockHeight;    //虚拟盘里圆的高
@@ -308,7 +122,6 @@ namespace IndustryDemo.Controllerui
         public Detectionui()
         {
             InitializeComponent();
-            InitializeDetectionProgressPanel();
             InitializeDrawResources();
             //m_hDisplayHandle = new IntPtr[4];
             this.Dock = DockStyle.Fill;
@@ -642,7 +455,7 @@ namespace IndustryDemo.Controllerui
             control.motor_run(2, 75);       //,M2 67mm
             control.motor_run(2, 67);       //,M2 67mm
             control.motor_run(34, 72 - Global.thickness + Global.focaldistance);       //,M34 72.7mm
-            control.motor_run(34, 73 - Global.thickness + Global.focaldistance);       //,M34 72.7mm
+            control.motor_run(34, 73.1 - Global.thickness + Global.focaldistance);       //,M34 72.7mm
             
         }
         #endregion
@@ -1076,7 +889,7 @@ namespace IndustryDemo.Controllerui
                 int s = j;
                 IPTaskList1.Add(Task.Run(() =>
                 {
-                    position4.ImageProcess1("D:/" + Global.qrCode + "/" + Global.detectiontime_test + "/camera" + s + "/ring", s);
+                    position4.ImageProcess1("G:/" + Global.qrCode + "/" + Global.detectiontime + "/camera" + s + "/ring", s);
                 }));
             }
 
@@ -1097,8 +910,8 @@ namespace IndustryDemo.Controllerui
                 downflag = 1;
                 if (Global.dsface == "双面" || Global.dsface == "下面")
                 {
-                    //ToDownRefPoint();         //到下层拍照参考点
-                    //getDownImage();         //获取下层图像
+                    ToDownRefPoint();         //到下层拍照参考点
+                    getDownImage();         //获取下层图像
                 }
             }));
             for (int i = 1; i < 5; i++)
@@ -1106,7 +919,7 @@ namespace IndustryDemo.Controllerui
                 int k = i;
                 IPTaskList0.Add(Task.Run(() =>
                 {
-                    detectionWithDL0.ImageProcess("D:/" + Global.qrCode + "/" + Global.detectiontime_test + "/camera" + k + "/ring");//
+                    detectionWithDL0.ImageProcess("G:/" + Global.qrCode + "/" + Global.detectiontime + "/camera" + k + "/ring");//
                 }));
                 //Task.WaitAll(IPTaskList.ToArray());
             }
@@ -1194,75 +1007,23 @@ namespace IndustryDemo.Controllerui
             }
             
         }
-
-        private int[,] LoadFilterLevelsForDisplay()
-        {
-            int[,] filterLevelArray = new int[Global.optRow, Global.optLine];
-            Parallel.For(0, Global.optRow, i =>
-            {
-                for (int j = 0; j < Global.optLine; j++)
-                {
-                    filterLevelArray[i, j] = 3;
-                }
-            });
-
-            string localErr;
-            DataTable levelTable = MySqlHelper.GetDataTable(out localErr, "select posX,posY,level from filterlevel where qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "'");
-            if (levelTable == null)
-            {
-                return filterLevelArray;
-            }
-
-            Parallel.For(0, levelTable.Rows.Count, rowIndex =>
-            {
-                int posX = Convert.ToInt32(levelTable.Rows[rowIndex][0]);
-                int posY = Convert.ToInt32(levelTable.Rows[rowIndex][1]);
-                int level = Convert.ToInt32(levelTable.Rows[rowIndex][2]);
-                if (posX >= 0 && posX < Global.optRow && posY >= 0 && posY < Global.optLine)
-                {
-                    filterLevelArray[posX, posY] = level;
-                }
-            });
-
-            return filterLevelArray;
-        }
-
         void GetDefectFilt()
         {
-            DateTime timingStepStart;
-            Stopwatch timingStepStopwatch;
-
-            timingStepStart = StartTimingStep(out timingStepStopwatch);
             divideScale();//分级
-            FinishTimingStep("后处理-分级计算", timingStepStart, timingStepStopwatch);
 
 
-            timingStepStart = StartTimingStep(out timingStepStopwatch);
             DataTable dt2 = MySqlHelper.GetDataTable(out err, "select count(*) from defection WHERE qrcode ='"+Global.qrCode + "' and detectiontime='" + Global.detectiontime + "'");
             //MessageBox.Show(Global.detectiontime);
             Global.defNumber = Convert.ToInt32(dt2.Rows[0][0]);      //获取总瑕疵数
             DataTable dt3 = MySqlHelper.GetDataTable(out err, "select posX,posY from defection WHERE qrcode='"+Global.qrCode + "' and detectiontime='" + Global.detectiontime + "'");
-            FinishTimingStep("后处理-读取瑕疵数量和位置", timingStepStart, timingStepStopwatch);
-            AddTiming("后处理-瑕疵数量 count=" + Global.defNumber, DateTime.Now, DateTime.Now, 0);
+            //获取瑕疵的位置
+            DataTable dt4 = MySqlHelper.GetDataTable(out err, "select trayX,trayY from defection WHERE qrcode='"+Global.qrCode + "' and detectiontime='" + Global.detectiontime + "'");
 
-            timingStepStart = StartTimingStep(out timingStepStopwatch);
-            object optArrayLock = new object();
-            Parallel.For(0, Global.defNumber, i =>
+            for (int i = 0; i < Global.defNumber; i++)
             {
-                int posX = Convert.ToInt32(dt3.Rows[i][0]);
-                int posY = Convert.ToInt32(dt3.Rows[i][1]);
-                lock (optArrayLock)
-                {
-                    optArray[posX, posY] += 1;
-                }
-            });
-            FinishTimingStep("后处理-并行统计每片瑕疵数量", timingStepStart, timingStepStopwatch);
+                optArray[Convert.ToInt32(dt3.Rows[i][0]), Convert.ToInt32(dt3.Rows[i][1])] += 1;
+            }
 
-            timingStepStart = StartTimingStep(out timingStepStopwatch);
-            int[,] filterLevelArray = LoadFilterLevelsForDisplay();
-            FinishTimingStep("后处理-并行准备显示等级", timingStepStart, timingStepStopwatch);
-
-            timingStepStart = StartTimingStep(out timingStepStopwatch);
             Image backgroundBorder = new Bitmap(panelOpticalfilter.Width, panelOpticalfilter.Height);
 
             Graphics gra = Graphics.FromImage(backgroundBorder);
@@ -1283,10 +1044,12 @@ namespace IndustryDemo.Controllerui
             {
                 for (int j = 0; j < Global.optLine; j++)
                 {
-                    int currentLevel = filterLevelArray[i, j];
+                    //获取滤光片等级
+                    string order = "select level from filterlevel where qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "' and posX='" + i + "' and posY='" + j + "'";
+                    DataTable dt_now = MySqlHelper.GetDataTable(out err, order);
                     //if (optArray[i, j] != 0)
                     {
-                        if (currentLevel == 6)
+                        if (Convert.ToInt32(dt_now.Rows[0][0]) == 6)
                         {
                             if (Global.optshape == "圆形")
                             {
@@ -1304,7 +1067,7 @@ namespace IndustryDemo.Controllerui
                             }
 
                         }
-                        else if (currentLevel == 5)
+                        else if (Convert.ToInt32(dt_now.Rows[0][0]) == 5)
                         {
                             if (Global.optshape == "圆形")
                             {
@@ -1320,7 +1083,7 @@ namespace IndustryDemo.Controllerui
                             }
 
                         }
-                        else if (currentLevel == 4)
+                        else if (Convert.ToInt32(dt_now.Rows[0][0]) == 4)
                         {
                             if (Global.optshape == "圆形")
                             {
@@ -1336,7 +1099,7 @@ namespace IndustryDemo.Controllerui
                             }
 
                         }
-                        else if (currentLevel == 3)
+                        else if (Convert.ToInt32(dt_now.Rows[0][0]) == 3)
                         {
                             if (Global.optshape == "圆形")
                             {
@@ -1358,22 +1121,6 @@ namespace IndustryDemo.Controllerui
             }
             panelOpticalfilter.BackgroundImage = backgroundBorder;
             panelOpticalfilter.BackgroundImageLayout = ImageLayout.Stretch;
-            //在虚拟盘绘制3x3九宫格黑线，便于定位
-            float gridX1 = width / 3f;
-            float gridX2 = width * 2f / 3f;
-            float gridY1 = height / 3f;
-            float gridY2 = height * 2f / 3f;
-            using (Pen gridPen = new Pen(Color.Black, 1))
-            {
-                gra.DrawLine(gridPen, gridX1, 0, gridX1, height);
-                gra.DrawLine(gridPen, gridX2, 0, gridX2, height);
-                gra.DrawLine(gridPen, 0, gridY1, width, gridY1);
-                gra.DrawLine(gridPen, 0, gridY2, width, gridY2);
-            }
-
-            panelOpticalfilter.BackgroundImage = backgroundBorder;
-            panelOpticalfilter.BackgroundImageLayout = ImageLayout.Stretch;
-            FinishTimingStep("后处理-绘制虚拟盘结果", timingStepStart, timingStepStopwatch);
 
 
 
@@ -1609,23 +1356,14 @@ namespace IndustryDemo.Controllerui
         private setTextValueCallBack setCallBack;
         public void Start_Detection()
         {
-            ResetTiming();
-            UpdateDetectionProgress(0, "开始检测");
-            DateTime timingStepStart;
-            Stopwatch timingStepStopwatch;
-
-            timingStepStart = StartTimingStep(out timingStepStopwatch);
             #region  连接扫码枪 并创建数据接收事件
-          //  _serialPort1.PortName = "com4";
-          //  _serialPort1.Open();
+            _serialPort1.PortName = "com4";
+            _serialPort1.Open();
             DataReceivedHandler();      //二维码数据接收处理函数
             #endregion
-            FinishTimingStep("读取二维码和托盘信息", timingStepStart, timingStepStopwatch);
-            UpdateDetectionProgress(5, "二维码和托盘信息读取完成");
 
-           // control.OnlyWritepushRegHoldingBuf(40006, 5);   //料盘固定
+            control.OnlyWritepushRegHoldingBuf(40006, 5);   //料盘固定
             //构造滤光片矩阵
-            timingStepStart = StartTimingStep(out timingStepStopwatch);
             optArray = new int[Global.optRow, Global.optLine];
             for (int i = 0; i < Global.optRow; i++)
             {
@@ -1634,10 +1372,7 @@ namespace IndustryDemo.Controllerui
                     optArray[i, j] = 0;                             //矩阵初值全为0
                 }
             }
-            FinishTimingStep("初始化滤光片矩阵", timingStepStart, timingStepStopwatch);
-            UpdateDetectionProgress(8, "滤光片矩阵初始化完成");
 
-            timingStepStart = StartTimingStep(out timingStepStopwatch);
             System.DateTime currentTime = new System.DateTime();
             currentTime = System.DateTime.Now;
             string year = currentTime.Year.ToString();
@@ -1647,35 +1382,23 @@ namespace IndustryDemo.Controllerui
             string minute = currentTime.Minute.ToString();
             string second = currentTime.Second.ToString();
             Global.detectiontime = year + "-" + month + "-" + day + "-" + hour + "-" + minute; //不显示秒
-            FinishTimingStep("初始化检测时间", timingStepStart, timingStepStopwatch);
-            UpdateDetectionProgress(10, "检测时间初始化完成");
-            timingStepStart = StartTimingStep(out timingStepStopwatch);
             creatVirtualFilt();     //创建虚拟盘
-            FinishTimingStep("创建虚拟盘", timingStepStart, timingStepStopwatch);
-            UpdateDetectionProgress(12, "虚拟盘创建完成");
 
 
 
-           // Connect_UpCamera();     //连接上层相机
-           // Connect_DownCamera();     //连接下层相机
+            Connect_UpCamera();     //连接上层相机
+            Connect_DownCamera();     //连接下层相机
 
             //复位
             //STMInitial_out();
 
-            //Action takephoto = DetectionBegin;
-            //AsyncCallback callback = ar =>
-           // {
+            Action takephoto = DetectionBegin;
+            AsyncCallback callback = ar =>
+            {
                 DetectionWithDL2 detectionWithDL = new DetectionWithDL2();
                 DetectionWithDL2 position4 = new DetectionWithDL2();
                 HObject DL = new HObject();
                 List<Task> IPTaskList = new List<Task>();
-                timingStepStart = StartTimingStep(out timingStepStopwatch);
-                Global.detectiontime_test = "2024-10-30-10-34";
-                FinishTimingStep("设置离线图片批次", timingStepStart, timingStepStopwatch);
-                UpdateDetectionProgress(15, "离线图片批次设置完成");
-                timingStepStart = StartTimingStep(out timingStepStopwatch);
-                UpdateDetectionProgress(18, "开始定位补偿");
-                int positionFinishedCount = 0;
                 for (int i = 5; i < 9; i++)
                 {
 
@@ -1685,58 +1408,28 @@ namespace IndustryDemo.Controllerui
                     IPTaskList.Add(Task.Run(() =>
                     {
 
-                        DateTime cameraTimingStart = StartTimingStep(out Stopwatch cameraTimingStopwatch);
-                        try
-                        {
-                        position4.ImageProcess1("D:/" + Global.qrCode + "/" + Global.detectiontime_test + "/camera" + s + "/ring", s);//
-                        }
-                        finally
-                        {
-                            FinishTimingStep("定位补偿-camera" + s, cameraTimingStart, cameraTimingStopwatch);
-                        }
+                        position4.ImageProcess1("G:/" + Global.qrCode + "/" + Global.detectiontime + "/camera" + s + "/ring", s);//
                     }));
-                    Task.WaitAll(IPTaskList.ToArray());
-                    positionFinishedCount++;
-                    UpdateDetectionProgress(18 + positionFinishedCount * 3, "定位补偿 camera" + s + " 完成");
+                    //Task.WaitAll(IPTaskList.ToArray());
 
                 }
                 Task.WaitAll(IPTaskList.ToArray());
-                FinishTimingStep("定位补偿总耗时", timingStepStart, timingStepStopwatch);
-                UpdateDetectionProgress(30, "定位补偿完成");
                 IPTaskList.Clear();
-                timingStepStart = StartTimingStep(out timingStepStopwatch);
-                UpdateDetectionProgress(32, "开始深度学习检测");
-                int dlFinishedCount = 0;
-                for (int i = 1;i < 9; i++)
+                for (int i = 5;i < 9; i++)
                 {
                     int k = i;
                     IPTaskList.Add(Task.Run(() =>
                     {
-                        DateTime cameraTimingStart = StartTimingStep(out Stopwatch cameraTimingStopwatch);
-                        try
-                        {
-                            detectionWithDL.ImageProcess("D:/" + Global.qrCode + "/" + Global.detectiontime_test + "/camera" + k + "/ring");//
-                        }
-                        finally
-                        {
-                            FinishTimingStep("深度学习检测-camera" + k, cameraTimingStart, cameraTimingStopwatch);
-                        }
+                        detectionWithDL.ImageProcess("G:/" + Global.qrCode + "/" + Global.detectiontime + "/camera" + k + "/ring");//
                     }));
-                    Task.WaitAll(IPTaskList.ToArray());
-                    dlFinishedCount++;
-                    UpdateDetectionProgress(32 + dlFinishedCount * 7, "深度学习检测 camera" + k + " 完成");
+                    //Task.WaitAll(IPTaskList.ToArray());
                 }
                 Task.WaitAll(IPTaskList.ToArray());
-                FinishTimingStep("深度学习检测总耗时", timingStepStart, timingStepStopwatch);
-                UpdateDetectionProgress(88, "深度学习检测完成");
 
                 //MessageBox.Show(detectionWithDL.getZx() + "," + detectionWithDL.getZy());
-                timingStepStart = StartTimingStep(out timingStepStopwatch);
                 int bshow = 0;
                 setCallBack = new setTextValueCallBack(showDefection);
                 textEdit5.Invoke(setCallBack,bshow);    //显示瑕疵数量
-                FinishTimingStep("显示瑕疵数量", timingStepStart, timingStepStopwatch);
-                UpdateDetectionProgress(90, "瑕疵数量显示完成");
                 //getDefInfo(); //从数据库获取瑕疵信息
 
                 //defToOpt();//瑕疵位置映射到哪块滤光片
@@ -1745,44 +1438,38 @@ namespace IndustryDemo.Controllerui
 
                 //IPTaskList.Add(Task.Run(() =>
                 //{
-                    timingStepStart = StartTimingStep(out timingStepStopwatch);
-                    UpdateDetectionProgress(92, "开始后处理");
                     GetDefectFilt();     //取瑕疵滤光片
-                    FinishTimingStep("后处理总耗时", timingStepStart, timingStepStopwatch);
-                    UpdateDetectionProgress(98, "后处理完成");
                 //}));
                 //Task.WaitAll(IPTaskList.ToArray());
 
 
 
-               //control.motor_run(5, 1);
-               //control.motor_run(6, 1);
-               //control.motor_run(7, 1);
-               //control.motor_run(5, 0);
-                //control.motor_run(6, 0);
-                //control.motor_run(7, 0);
-               // Start_out();    //检测取次品结束，托盘伸出，进行下一轮
-                //camera1.DetectFinished();
-               // camera2.DetectFinished();
-               // camera3.DetectFinished();
-               // camera4.DetectFinished();
-               // camera5.DetectFinished();
-               // camera6.DetectFinished();
-              //  camera7.DetectFinished();
-              //  camera8.DetectFinished();
-               // bnClose_up_Click(); //上层相机关闭链接
-               // bnClose_down_Click();   //下层相机关闭链接
-            //};
-           // takephoto.BeginInvoke(callback,null);
+                control.motor_run(5, 1);
+                control.motor_run(6, 1);
+                control.motor_run(7, 1);
+                control.motor_run(5, 0);
+                control.motor_run(6, 0);
+                control.motor_run(7, 0);
+                Start_out();    //检测取次品结束，托盘伸出，进行下一轮
+                camera1.DetectFinished();
+                camera2.DetectFinished();
+                camera3.DetectFinished();
+                camera4.DetectFinished();
+                camera5.DetectFinished();
+                camera6.DetectFinished();
+                camera7.DetectFinished();
+                camera8.DetectFinished();
+                bnClose_up_Click(); //上层相机关闭链接
+                bnClose_down_Click();   //下层相机关闭链接
+            };
+            takephoto.BeginInvoke(callback,null);
 
-           // ToDiskThread = new Thread(ToDisk);  //图像检测与保存线程
-           // ToDiskThread.Start();
-          //  ToDiskThreadStat = true;
+            ToDiskThread = new Thread(ToDisk);  //图像检测与保存线程
+            ToDiskThread.Start();
+            ToDiskThreadStat = true;
 
             //MessageBox.Show("test2");
 
-            FinishTimingAndSave();
-            UpdateDetectionProgress(100, "检测完成");
 
         }
         #endregion
@@ -1793,14 +1480,15 @@ namespace IndustryDemo.Controllerui
         {
             try
             {
-               // _serialPort1.DiscardInBuffer();  //丢弃来自串行驱动程序的接收缓冲区的数据。
-               //string serialText = "RDC030";
-               // _serialPort1.Write(serialText);
-               // Global.qrCode = _serialPort1.ReadLine().Substring(1, 4);
-               // while (Global.qrCode == "") Global.qrCode = _serialPort1.ReadLine();
+                _serialPort1.DiscardInBuffer();  //丢弃来自串行驱动程序的接收缓冲区的数据。
+                string serialText = "RDC030";
+                _serialPort1.Write(serialText);
+                Global.qrCode = _serialPort1.ReadLine().Substring(1, 4);
+                while (Global.qrCode == "") Global.qrCode = _serialPort1.ReadLine();
                 //Global.cs文件定义的Global类中，存放了静态全局通用的变量 qrCode 等
-                Global.qrCode = "0004";
+
                 //MessageBox.Show(Global.qrCode);
+
                 if (Global.qrCode != "")
                 {
                     _continue = false;
@@ -1983,7 +1671,7 @@ namespace IndustryDemo.Controllerui
             
             for (int k = 0; k < Global.defNumberOnSameFilt; k++)
             {
-                string Query3 = "insert into deftrayinfo(defTrayqrcode,defFiltID,defType,defArea) values('" + Global.defTrayqrCode + "'," + defnumberflag + ",'" + dt1.Rows[k][0].ToString() + "'," + Convert.ToDouble(dt1.Rows[k][1]) + ")";  //将i行j列个滤光片上的瑕疵信息，插入到次品盘信息表中
+                string Query3 = "insert into deftrayinfo(defTrayqrcode,defFiltID,defType,defArea) value('" + Global.defTrayqrCode + "'," + defnumberflag + ",'" + dt1.Rows[k][0].ToString() + "'," + Convert.ToDouble(dt1.Rows[k][1]) + ")";  //将i行j列个滤光片上的瑕疵信息，插入到次品盘信息表中
                 //cmd2 = new MySqlCommand(Query3, conn);
                 //cmd2.ExecuteNonQuery();
                 MySqlHelper.UpdateData(out err, Query3);
@@ -2360,8 +2048,7 @@ namespace IndustryDemo.Controllerui
         {
             if (BlockHeight != 0 && BlockWidth != 0)
             {
-                Bitmap detailBitmap = new Bitmap(this.detailpanel.Width, this.detailpanel.Height);
-                Graphics gra = Graphics.FromImage(detailBitmap);
+                Graphics gra = this.detailpanel.CreateGraphics();
                 gra.Clear(this.BackColor);
                 gra.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 Brush bushwhite = new SolidBrush(Color.Black);//填充的颜色
@@ -2614,30 +2301,6 @@ namespace IndustryDemo.Controllerui
                         gra.FillRectangle(bushgreen, 0, 0, rectanglewidth, rectangleheight);//画填充椭圆的方法，x坐标、y坐标、宽、高，如果是100，则半径为50
                     }
                 }
-                //在detailpanel绘制3x3九宫格黑线，根据实际绘制的图形尺寸
-                float actualWidth, actualHeight;
-                if (Global.optshape == "圆形")
-                {
-                    actualWidth = circlewidth;
-                    actualHeight = circleheight;
-                }
-                else
-                {
-                    actualWidth = rectanglewidth;
-                    actualHeight = rectangleheight;
-                }
-
-                float gridX1 = actualWidth / 3f;
-                float gridX2 = actualWidth * 2f / 3f;
-                float gridY1 = actualHeight / 3f;
-                float gridY2 = actualHeight * 2f / 3f;
-                using (Pen gridPen = new Pen(Color.Black, 1))
-                {
-                    gra.DrawLine(gridPen, gridX1, 0, gridX1, actualHeight);
-                    gra.DrawLine(gridPen, gridX2, 0, gridX2, actualHeight);
-                    gra.DrawLine(gridPen, 0, gridY1, actualWidth, gridY1);
-                    gra.DrawLine(gridPen, 0, gridY2, actualWidth, gridY2);
-                }
                 textEdit5.Text = num1.ToString();   //划痕
                 textEdit6.Text = num2.ToString();   //内布毛
                 textEdit7.Text = num3.ToString();   //膜破
@@ -2648,19 +2311,6 @@ namespace IndustryDemo.Controllerui
                 textEdit16.Text = num8.ToString();  //手印
                 textEdit17.Text = num9.ToString();   //麻点
                 textEdit18.Text = num10.ToString();  //喷溅点
-                                                     //将绘制的图像显示到detailpanel并保存到文件
-                this.detailpanel.BackgroundImage = detailBitmap;
-
-                //保存图片到指定文件夹
-                string saveFolder = "D://" + Global.qrCode + "/" + Global.detectiontime + "/DefectDetail";
-                if (!System.IO.Directory.Exists(saveFolder))
-                {
-                    System.IO.Directory.CreateDirectory(saveFolder);
-                }
-                string fileName = saveFolder + "/FilterDetail_" + lastRow + "-" + lastCol + ".bmp";
-                detailBitmap.Save(fileName, System.Drawing.Imaging.ImageFormat.Bmp);
-
-                gra.Dispose();
             }
         }
 
@@ -2946,7 +2596,7 @@ namespace IndustryDemo.Controllerui
                 //将lt数据添加到listView1控件中
                 listView1.Items.Add(lt);
 
-                string path = "D:/" + Global.qrCode + "/" + Global.detectiontime_test + "/camera" + lastPicName[0] + "/ring/" + lastPicName + ".bmp";
+                string path = "G:/" + Global.qrCode + "/" + Global.detectiontime + "/camera" + lastPicName[0] + "/ring/" + lastPicName + ".bmp";
                 pictureshow NewForm = new pictureshow();
                 NewForm.showpicture(path, lastPicName, lastRow, lastCol); //将图像显示到From2窗体上
                 //NewForm.MdiParent = this;
@@ -2960,26 +2610,36 @@ namespace IndustryDemo.Controllerui
             conn.Close();
         }
 
-
         //分级
         public void divideScale()
         {
+            //定义中间划痕长度
+            double centreScchLength = 0;
+            //定义边缘划痕长度
+            double edgeScchLength = 0;
+            //定义中间针孔个数
+            double centrePhLength = 0;
+            //定义边缘针孔个数
+            double edgePhLength = 0;
+
+            bool isNOOK = false;
+
             string[] NOKArray = new string[] { "膜内布毛", "腐蚀印"}; // 直接导致滤光片不合格的瑕疵
 
-            Parallel.For(0, Global.optRow, i =>
+            for (int i = 0; i < Global.optRow; i++)
             {
                 for (int j = 0; j < Global.optLine; j++)
                 {
                     //定义中间划痕长度=0
-                    double centreScchLength = 0;
+                    centreScchLength = 0;
                     //定义边缘划痕长度=0
-                    double edgeScchLength = 0;
+                    edgeScchLength = 0;
                     //定义中间针孔个数=0
-                    double centrePhLength = 0;
+                    centrePhLength = 0;
                     //定义边缘针孔个数=0
-                    double edgePhLength = 0;
+                    edgePhLength = 0;
 
-                    bool isNOOK = false;
+                    isNOOK = false;
 
                     //从数据库获取当前盘的第i行第j列滤光片的瑕疵、总数
                     string order = "select trayX,trayY,defectionType,scratchLength,pinholeRadius from defection where qrcode='" + Global.qrCode + "' and detectiontime='" + Global.detectiontime + "' and posX='" + i + "' and posY='" + j + "'";
@@ -3423,7 +3083,7 @@ namespace IndustryDemo.Controllerui
                         }
                     }
                 }
-            });
+            }
         }
     }
 }
